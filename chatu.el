@@ -175,11 +175,13 @@
   "Refresh image for different major mode."
   (cond ((and (featurep 'markdown-mode)
               (derived-mode-p 'markdown-mode))
+         (require 'markdown-mode)
          (markdown-remove-inline-images)
          (markdown-display-inline-images))
-        ((and (featurep 'org-mode)
-              (derived-mode-p 'org-mode)))
-        ((org-redisplay-inline-images))))
+        ((and (featurep 'org)
+              (derived-mode-p 'org-mode))
+         (require 'org)
+         (org-redisplay-inline-images))))
 
 (defun chatu-insert-image (path)
   "Insert image string PATH for different major mode."
