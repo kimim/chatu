@@ -25,9 +25,15 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+;;; Commentary:
+
+;; script and open function for curl
+
 ;;; Code:
 
 (defun chatu-curl-script (keyword-plist)
+  "Get conversion script. KEYWORD-PLIST contains parameters from
+ the chatu line."
   (let* ((input (plist-get keyword-plist :input))
          (output-path (plist-get keyword-plist :output-path)))
     (format "curl -o %s %s"
@@ -35,7 +41,8 @@
             (shell-quote-argument input))))
 
 (defun chatu-curl-open (keyword-plist)
-  "Open curl link."
+  "Open curl link. KEYWORD-PLIST contains parameters from the
+ chatu line."
   (interactive)
   (let ((link (plist-get keyword-plist :input)))
     (cond
@@ -47,3 +54,5 @@
      )))
 
 (provide 'chatu-curl)
+
+;;; chatu-curl.el ends here

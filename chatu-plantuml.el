@@ -25,12 +25,19 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+;;; Commentary:
+
+;; script and open function for plantuml
+
 ;;; Code:
 
 (defun chatu-plantuml-add-extention (path)
+  "Change to default extension for PATH of the input file."
   (file-name-with-extension path "puml"))
 
 (defun chatu-plantuml-script (keyword-plist)
+  "Get conversion script. KEYWORD-PLIST contains parameters from
+ the chatu line."
   (let ((page (plist-get keyword-plist :page)))
     (concat "java -jar "
             plantuml-jar-path
@@ -42,10 +49,13 @@
             (plist-get keyword-plist :output-path))))
 
 (defun chatu-plantuml-open (keyword-plist)
-  "Open .puml file."
+  "Open .puml file. KEYWORD-PLIST contains parameters from the
+ chatu line."
   (interactive)
   (find-file-other-window
    (chatu-plantuml-add-extention
     (plist-get keyword-plist :input-path))))
 
 (provide 'chatu-plantuml)
+
+;;; chatu-plantuml.el ends here

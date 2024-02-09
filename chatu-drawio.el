@@ -25,12 +25,19 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+;;; Commentary:
+
+;; script and open function for drawio
+
 ;;; Code:
 
 (defun chatu-drawio-add-extention (path)
+  "Change to default extension for PATH of the input file."
   (file-name-with-extension path "drawio"))
 
 (defun chatu-drawio-script (keyword-plist)
+  "Get conversion script. KEYWORD-PLIST contains parameters from
+ the chatu line."
   (let* ((input-path
           (chatu-drawio-add-extention
            (plist-get keyword-plist :input-path)))
@@ -49,7 +56,8 @@
             (shell-quote-argument output-path-pdf))))
 
 (defun chatu-drawio-open (keyword-plist)
-  "Open .drawio file."
+  "Open .drawio file. KEYWORD-PLIST contains parameters from the
+ chatu line."
   (interactive)
   (let ((path (chatu-drawio-add-extention
                (plist-get keyword-plist :input-path))))
@@ -72,3 +80,5 @@
                      path)))))
 
 (provide 'chatu-drawio)
+
+;;; chatu-drawio.el ends here

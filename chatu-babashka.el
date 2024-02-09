@@ -25,17 +25,26 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+;;; Commentary:
+
+;; script and open function for babashka
+
 ;;; Code:
 
 (defun chatu-babashka-script (keyword-plist)
+  "Open input, KEYWORD-PLIST contains parameters from the chatu
+line."
   (let ((input-path (plist-get keyword-plist :input-path)))
     (format "bb %s"
             (shell-quote-argument input-path))))
 
 (defun chatu-babashka-open (keyword-plist)
-  "Open curl link."
+  "Open input file, KEYWORD-PLIST contains parameters from the
+chatu line."
   (interactive)
   (find-file-other-window
    (plist-get keyword-plist :input-path)))
 
 (provide 'chatu-babashka)
+
+;;; chatu-babashka.el ends here
