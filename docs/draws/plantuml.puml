@@ -1,0 +1,19 @@
+participant "orgmode" as o
+participant "markdown" as m
+participant "chatu" as c
+participant "plantuml" as p
+
+alt orgmode
+c -> o: extract diagram info
+o --> c: diagram info
+c -> p: convert
+p --> c: finished
+c -> o: insert image link
+newpage
+else markdown
+c -> m: extract diagram info
+m --> c: diagram info
+c -> p: convert
+p --> c: finished
+c -> m: insert image link
+end
