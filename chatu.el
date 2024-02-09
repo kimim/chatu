@@ -6,7 +6,7 @@
 ;; URL: https://github.com/kimim/chatu
 ;; Keywords: multimedia convenience
 ;; Version: 0.1
-;; Package-Requires: ((org "9.6.6") (emacs "28.1"))
+;; Package-Requires: ((org "9.6.6") (emacs "28.1") (plantuml-mode "1.2.9"))
 
 ;; This file is NOT part of GNU Emacs.
 
@@ -235,7 +235,7 @@
 
 ;;;###autoload
 (defun chatu-open ()
-  "Open diagram file in emacs."
+  "Open diagram file in Emacs."
   (interactive)
   (let* ((keyword-plist (chatu-keyword-plist))
          (type (plist-get keyword-plist :type)))

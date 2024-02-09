@@ -5,8 +5,6 @@
 ;; Author:  Kimi Ma <kimi.im@outlook.com>
 ;; URL: https://github.com/kimim/chatu
 ;; Keywords: multimedia convenience
-;; Version: 0.1
-;; Package-Requires: ((org "9.6.6") (emacs "28.1"))
 
 ;; This file is NOT part of GNU Emacs.
 
@@ -32,8 +30,8 @@
 ;;; Code:
 
 (defun chatu-curl-script (keyword-plist)
-  "Get conversion script. KEYWORD-PLIST contains parameters from
- the chatu line."
+  "Get conversion script.
+KEYWORD-PLIST contains parameters from the chatu line."
   (let* ((input (plist-get keyword-plist :input))
          (output-path (plist-get keyword-plist :output-path)))
     (format "curl -o %s %s"
@@ -41,8 +39,8 @@
             (shell-quote-argument input))))
 
 (defun chatu-curl-open (keyword-plist)
-  "Open curl link. KEYWORD-PLIST contains parameters from the
- chatu line."
+  "Open curl link.
+KEYWORD-PLIST contains parameters from the chatu line."
   (interactive)
   (let ((link (plist-get keyword-plist :input)))
     (cond

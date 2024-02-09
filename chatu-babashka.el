@@ -5,8 +5,6 @@
 ;; Author:  Kimi Ma <kimi.im@outlook.com>
 ;; URL: https://github.com/kimim/chatu
 ;; Keywords: multimedia convenience
-;; Version: 0.1
-;; Package-Requires: ((org "9.6.6") (emacs "28.1"))
 
 ;; This file is NOT part of GNU Emacs.
 
@@ -32,15 +30,15 @@
 ;;; Code:
 
 (defun chatu-babashka-script (keyword-plist)
-  "Open input, KEYWORD-PLIST contains parameters from the chatu
-line."
+  "Open input.
+KEYWORD-PLIST contains parameters from the chatu line."
   (let ((input-path (plist-get keyword-plist :input-path)))
     (format "bb %s"
             (shell-quote-argument input-path))))
 
 (defun chatu-babashka-open (keyword-plist)
-  "Open input file, KEYWORD-PLIST contains parameters from the
-chatu line."
+  "Open input file.
+KEYWORD-PLIST contains parameters from the chatu line."
   (interactive)
   (find-file-other-window
    (plist-get keyword-plist :input-path)))

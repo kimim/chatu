@@ -5,8 +5,6 @@
 ;; Author:  Kimi Ma <kimi.im@outlook.com>
 ;; URL: https://github.com/kimim/chatu
 ;; Keywords: multimedia convenience
-;; Version: 0.1
-;; Package-Requires: ((org "9.6.6") (emacs "28.1"))
 
 ;; This file is NOT part of GNU Emacs.
 
@@ -31,13 +29,15 @@
 
 ;;; Code:
 
+(require 'plantuml-mode)
+
 (defun chatu-plantuml-add-extention (path)
   "Change to default extension for PATH of the input file."
   (file-name-with-extension path "puml"))
 
 (defun chatu-plantuml-script (keyword-plist)
-  "Get conversion script. KEYWORD-PLIST contains parameters from
- the chatu line."
+  "Get conversion script.
+KEYWORD-PLIST contains parameters from the chatu line."
   (let ((page (plist-get keyword-plist :page)))
     (concat "java -jar "
             plantuml-jar-path
@@ -49,8 +49,8 @@
             (plist-get keyword-plist :output-path))))
 
 (defun chatu-plantuml-open (keyword-plist)
-  "Open .puml file. KEYWORD-PLIST contains parameters from the
- chatu line."
+  "Open .puml file.
+KEYWORD-PLIST contains parameters from the chatu line."
   (interactive)
   (find-file-other-window
    (chatu-plantuml-add-extention
