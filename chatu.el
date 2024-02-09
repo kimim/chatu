@@ -91,6 +91,7 @@
   :type 'string)
 
 (defun chatu-get-type (line)
+  "Get chatu type from string LINE."
   (when (string-match
          ":\\(\\w+\\) +" line)
     (list :type
@@ -98,6 +99,7 @@
            (match-string 1 line)))))
 
 (defun chatu-get-input (line)
+  "Get chatu input file from string LINE."
   (when (string-match
            (concat ":\\w* +" chatu-file-regex) line)
       (list :input
@@ -105,6 +107,7 @@
              (match-string 1 line)))))
 
 (defun chatu-get-output (line)
+  "Get chatu output file from string LINE."
   (when (string-match
            (concat ":output +" chatu-file-regex) line)
       (list :output
@@ -112,6 +115,7 @@
              (match-string 1 line)))))
 
 (defun chatu-get-input-dir (line)
+  "Get chatu output directory from string LINE."
   (when (string-match
            (concat ":input-dir +" chatu-dir-regex) line)
       (list :input-dir
@@ -119,6 +123,7 @@
              (match-string 1 line)))))
 
 (defun chatu-get-output-dir (line)
+  "Get chatu input directory from string LINE."
   (when (string-match
            (concat ":output-dir +" chatu-dir-regex) line)
       (list :output-dir
@@ -126,12 +131,13 @@
              (match-string 1 line)))))
 
 (defun chatu-get-page (line)
+  "Get chatu output page from string LINE."
   (when (string-match ":page +\\([0-9]*\\)[ \\t\\n]*" line)
     (list :page
           (substring-no-properties
            (match-string 1 line)))))
 
-(setq chatu-keyword-value-functions
+(defvar chatu-keyword-value-functions
       '(chatu-get-type
         chatu-get-input
         chatu-get-output
@@ -140,6 +146,7 @@
         chatu-get-output-dir))
 
 (defun chatu-normalize-keyword-plist (keyword-plist)
+  "Normalize KEYWORD-PLIST."
   (let* ((input-dir (or (plist-get keyword-plist :input-dir)
                         chatu-input-dir))
          (input (plist-get keyword-plist :input))
@@ -156,7 +163,7 @@
     keyword-plist))
 
 (defun chatu-keyword-plist ()
-  (interactive)
+  "Get normalized KEYWORD-PLIST from string line."
   (let ((plist))
     (when-let ((line (buffer-substring (line-beginning-position)
                                        (line-end-position))))
@@ -165,6 +172,7 @@
     (chatu-normalize-keyword-plist plist)))
 
 (defun chatu-refresh-image ()
+  "Refresh image for different major mode."
   (cond ((and (featurep 'markdown-mode)
               (derived-mode-p 'markdown-mode))
          (markdown-remove-inline-images)
@@ -174,18 +182,21 @@
         ((org-redisplay-inline-images))))
 
 (defun chatu-insert-image (path)
+  "Insert image string PATH for different major mode."
   (cond ((derived-mode-p 'markdown-mode)
          (insert "![](" path ")"))
         ((derived-mode-p 'org-mode)
          (insert "[[file:" path "]]"))))
 
 (defun chatu-img-pre ()
+  "Get image string prefix for different major mode."
   (cond ((derived-mode-p 'markdown-mode)
          "![")
         ((derived-mode-p 'org-mode)
          "[[")))
 
 (defun chatu-skip-lines ()
+  "Skip lines after chatu line."
   (while (and (derived-mode-p 'org-mode)
               (string-prefix-p
                "#+" (buffer-substring
