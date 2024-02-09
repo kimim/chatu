@@ -23,8 +23,8 @@ From melpa with use-package:
 
 Or git submodule and use-package
 #+begin_src emacs-lisp
-(use-package org-drawio
-  :load-path "~/.emacs.d/site-lisp/org-drawio"
+(use-package chatu
+  :load-path "~/.emacs.d/site-lisp/chatu"
   :commands (chatu-add
              chatu-open)
   :custom ((chatu-input-dir "./draws")
@@ -93,7 +93,7 @@ org-mode:
 #+begin_src org
 #+chatu: :drawio "diagram"
 #+name: workflow
-#+caption: org-drawio workflow
+#+caption: chatu workflow
 #+end_src
 
 ** Extract specific page
