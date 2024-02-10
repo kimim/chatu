@@ -150,7 +150,7 @@ markdown-mode:
 <!-- #+chatu: :drawio "diagram.drawio" :page 0 :input-dir "./draws" :output-dir "./images" :output "diagram.svg" -->
 ```
 
-* Contributors
+# Contributors
 
 <a href = "https://github.com/kimim/chatu/graphs/contributors">
   <img src = "https://contrib.rocks/image?repo=kimim/chatu"/>

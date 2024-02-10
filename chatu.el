@@ -6,7 +6,7 @@
 ;; URL: https://github.com/kimim/chatu
 ;; Keywords: multimedia convenience
 ;; Version: 0.1
-;; Package-Requires: ((org "9.6.6") (emacs "28.1") (plantuml-mode "1.2.9"))
+;; Package-Requires: ((org "9.6.6") (emacs "29.1") (plantuml-mode "1.2.9"))
 
 ;; This file is NOT part of GNU Emacs.
 
@@ -273,7 +273,7 @@
              keyword-plist)))
 
 (defun chatu-ctrl-c-ctrl-c ()
-  "Hook function for `org-ctrl-c-ctrl-c-hook'"
+  "Hook function for `org-ctrl-c-ctrl-c-hook'."
   (let ((plist (chatu-keyword-plist)))
     (if (string= "chatu" (plist-get plist :keyword))
         (progn
@@ -282,7 +282,8 @@
       nil)))
 
 (defun chatu-ctrl-c-ctrl-o (&optional args)
-  "Hook function for `org-open-at-point-functions'"
+  "Hook function for `org-open-at-point-functions'.
+ARGS is ignored, required by `markdown-follow-thing-at-point'."
   (ignore args) ;; args are not used.
   (let ((plist (chatu-keyword-plist)))
     (if (string= "chatu" (plist-get plist :keyword))
@@ -319,8 +320,8 @@
           ((and (featurep 'org)
                 (derived-mode-p 'org-mode))
            (require 'org)
-           (add-hook 'org-ctrl-c-ctrl-c-hook 'chatu-ctrl-c-ctrl-c)
-           (add-to-list 'org-open-at-point-functions 'chatu-ctrl-c-ctrl-o)))))
+           (add-hook 'org-ctrl-c-ctrl-c-hook #'chatu-ctrl-c-ctrl-c)
+           (add-to-list 'org-open-at-point-functions #'chatu-ctrl-c-ctrl-o)))))
 
 (provide 'chatu)
 
