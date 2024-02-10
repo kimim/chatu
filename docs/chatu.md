@@ -9,7 +9,7 @@
 ![](images/diagram.svg)
 
 # Insert image generated from plantuml file
-<!-- :plantuml "plantuml" -->
+<!-- #+chatu: :plantuml "plantuml" -->
 ![](./images/plantuml.svg)
 
 <!-- :plantuml "plantuml" :page 1 -->

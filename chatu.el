@@ -90,6 +90,14 @@
   "Define regex of directry. Currently support Chinese charaters."
   :type 'string)
 
+(defun chatu-get-keyword (line)
+  "Get chatu keyword from string LINE."
+  (when (string-match
+         "#\\+\\(\\w+\\): +" line)
+    (list :keyword
+          (substring-no-properties
+           (match-string 1 line)))))
+
 (defun chatu-get-type (line)
   "Get chatu type from string LINE."
   (when (string-match
@@ -138,7 +146,8 @@
            (match-string 1 line)))))
 
 (defvar chatu-keyword-value-functions
-      '(chatu-get-type
+      '(chatu-get-keyword
+        chatu-get-type
         chatu-get-input
         chatu-get-output
         chatu-get-page
@@ -147,20 +156,21 @@
 
 (defun chatu-normalize-keyword-plist (keyword-plist)
   "Normalize KEYWORD-PLIST."
-  (let* ((input-dir (or (plist-get keyword-plist :input-dir)
-                        chatu-input-dir))
-         (input (plist-get keyword-plist :input))
-         (_ (plist-put keyword-plist :input-path (concat input-dir "/" input)))
-         (output-dir (or (plist-get keyword-plist :output-dir)
-                         chatu-output-dir))
-         (output-param (plist-get keyword-plist :output))
-         (page (plist-get keyword-plist :page))
-         (output (or output-param
-                     (if page
-                         (concat (file-name-sans-extension input) "-" page ".svg")
-                       (file-name-with-extension input "svg"))))
-         (_ (plist-put keyword-plist :output-path (concat output-dir "/" output))))
-    keyword-plist))
+  (when (plist-get keyword-plist :keyword)
+      (let* ((input-dir (or (plist-get keyword-plist :input-dir)
+                            chatu-input-dir))
+             (input (plist-get keyword-plist :input))
+             (_ (plist-put keyword-plist :input-path (concat input-dir "/" input)))
+             (output-dir (or (plist-get keyword-plist :output-dir)
+                             chatu-output-dir))
+             (output-param (plist-get keyword-plist :output))
+             (page (plist-get keyword-plist :page))
+             (output (or output-param
+                         (if page
+                             (concat (file-name-sans-extension input) "-" page ".svg")
+                           (file-name-with-extension input "svg"))))
+             (_ (plist-put keyword-plist :output-path (concat output-dir "/" output))))
+        keyword-plist)))
 
 (defun chatu-keyword-plist ()
   "Get normalized KEYWORD-PLIST from string line."
@@ -207,6 +217,23 @@
     (forward-line)))
 
 ;;;###autoload
+(defun chatu-new ()
+  "Insert chatu text line respect to mode."
+  (interactive)
+  (insert
+   (cond ((derived-mode-p 'markdown-mode)
+          "<!-- #+chatu: :")
+         ((derived-mode-p 'org-mode)
+          "#+chatu: :"))
+   (read-string "type: " "drawio")
+   " \""
+   (read-string "input name: " "")
+   "\""
+   (if (derived-mode-p 'markdown-mode)
+       " -->"
+     "")))
+
+;;;###autoload
 (defun chatu-add ()
   "Concert diagram to svg and add to buffer."
   (interactive)
@@ -244,6 +271,56 @@
     (require (intern (concat "chatu-" type)))
     (funcall (intern (concat "chatu-" type "-open"))
              keyword-plist)))
+
+(defun chatu-ctrl-c-ctrl-c ()
+  "Hook function for `org-ctrl-c-ctrl-c-hook'"
+  (let ((plist (chatu-keyword-plist)))
+    (if (string= "chatu" (plist-get plist :keyword))
+        (progn
+          (chatu-add)
+          t)
+      nil)))
+
+(defun chatu-ctrl-c-ctrl-o (&optional args)
+  "Hook function for `org-open-at-point-functions'"
+  (ignore args) ;; args are not used.
+  (let ((plist (chatu-keyword-plist)))
+    (if (string= "chatu" (plist-get plist :keyword))
+        (progn
+          (chatu-open)
+          t)
+      nil)))
+
+;;;###autoload
+(define-minor-mode chatu-mode
+  "Add chatu commands or hooks."
+  :global nil
+  :lighter " Chatu"
+  (if (not chatu-mode)
+      (cond ((and (featurep 'markdown-mode)
+                  (derived-mode-p 'markdown-mode))
+             (require 'markdown-mode)
+             (keymap-unset markdown-mode-map "C-c C-c C-c" t)
+             (advice-remove 'markdown-follow-thing-at-point
+                            #'chatu-ctrl-c-ctrl-o))
+            ((and (featurep 'org)
+                  (derived-mode-p 'org-mode))
+             (require 'org)
+             (remove-hook 'org-ctrl-c-ctrl-c-hook 'chatu-ctrl-c-ctrl-c)
+             (setq org-open-at-point-functions
+                   (delete 'chatu-ctrl-c-ctrl-o org-open-at-point-functions))))
+    (cond ((and (featurep 'markdown-mode)
+                (derived-mode-p 'markdown-mode))
+           (require 'markdown-mode)
+           (keymap-set markdown-mode-map "C-c C-c C-c" 'chatu-add)
+           (advice-add 'markdown-follow-thing-at-point
+                       :before-until
+                       #'chatu-ctrl-c-ctrl-o))
+          ((and (featurep 'org)
+                (derived-mode-p 'org-mode))
+           (require 'org)
+           (add-hook 'org-ctrl-c-ctrl-c-hook 'chatu-ctrl-c-ctrl-c)
+           (add-to-list 'org-open-at-point-functions 'chatu-ctrl-c-ctrl-o)))))
 
 (provide 'chatu)
 

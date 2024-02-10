@@ -1,11 +1,13 @@
-* Introduction
+# Introduction
+
 A small tool to various files to .svg files or download image files,
 and insert it to orgmode or markdown on-the-fly.
 
-*插 chā 图 tú*: insert a diagram.
+**插 chā 图 tú**: insert a diagram.
 
-* Install
-Before using chatu, you may need to install some external programs and
+# Install
+
+Before using `chatu`, you may need to install some external programs and
 set them in your PATH:
 - draw.io and pdf2svg for drawio file conversion
 - plantuml.jar, java for plantuml
@@ -13,117 +15,143 @@ set them in your PATH:
 - curl for downloading file from web
 
 From melpa with use-package:
-#+begin_src emacs-lisp
+
+```emacs-lisp
 (use-package chatu
+  :hook ((org-mode markdown-mode) . chatu-mode)
   :commands (chatu-add
              chatu-open)
   :custom ((chatu-input-dir "./draws")
            (chatu-output-dir "./images")))
-#+end_src
+```
 
 Or git submodule and use-package
-#+begin_src emacs-lisp
+
+```emacs-lisp
 (use-package chatu
   :load-path "~/.emacs.d/site-lisp/chatu"
+  :hook ((org-mode markdown-mode) . chatu-mode)
   :commands (chatu-add
              chatu-open)
   :custom ((chatu-input-dir "./draws")
            (chatu-output-dir "./images")))
-#+end_src
+```
 
-* Usage
-Move cursor to ~chatu~ line, and invoke ~chatu-add~ to add image,
-~chatu-open~ to open original .drawio or .puml file.
+# Usage
 
-~chatu~ line means different in orgmode and markdown:
-- =#+chatu: :drawio= or =#+chatu: :plantuml= in orgmode
-- =<-- :drawio -->= or =<-- #+chatu: :plantuml -->= in markdown
+Move cursor to `chatu` line,
+- `C-c C-c` will invoke `chatu-add` to add image in orgmode.
+- `C-c C-c C-c` will invoke `chatu-add` to add image in markdown-mode.  
+- `C-c C-o` will invoke `chatu-open` to open original .drawio or .puml file.
 
-*Remind!*
+`chatu` line means different in orgmode and markdown:
+- `#+chatu: :drawio` or `#+chatu: :plantuml` in orgmode
+- `<-- #+chatu: :drawio -->` or `<-- #+chatu: :plantuml -->` in markdown
+
+**Remind!**
 - the input files should be the first parameter, for example, .drawio
   or .puml file.
 - in order to support whitespace in file and dir name, please "quote
   all of them".
 
-* Extension
-You can easily extend this package by adding new ~chatu-<tool>.el~. For
-example, when ~<tool> = drawio~, you need to define ~chatu-drawio-open~ and  ~chatu-drawio-script~ in ~chatu-drawio.el~.
+# Extension
 
-~chatu-drawio-open~ is invoked to open the drawio input file at the line.
+You can easily extend this package by adding new `chatu-<tool>.el`. For
+example, when `<tool> = drawio`, you need to define `chatu-drawio-open` and  `chatu-drawio-script` in `chatu-drawio.el`.
+- `chatu-drawio-open` is invoked to open the drawio input file at the line.
+- `chatu-drawio-script` is used to generate the shell script for conversion.
 
-~chatu-drawio-script~ is used to generate the shell script for conversion.
+Both method use a `keyword-plist` parameter, which contains the
+`chatu` settings from `chatu` line.
 
-* Usage
-See example [[./chatu.org]] in orgmode and  [[./chatu.md]] in markdown-mode.
+```org
+#+chatu: :drawio "diagram.drawio" :page 0 :input-dir "./draws" :output-dir "./images" :output "diagram.svg"
+```
 
-** Simple
+For example, we can get following `keyword-plist` from above `chatu` line:
+
+```emacs-lisp
+(:keyword "chatu" :type "drawio"
+ :input "diagram.drawio" :output "diagram.svg" :page "0"
+ :input-dir "./draws" :output-dir "./images"
+ :input-path "./draws/diagram.drawio"
+ :output-path "./images/diagram.svg")
+```
+# Usage
+
+See example [chatu.org](./chatu.org) in orgmode and  [chatu.md](./chatu.md) in markdown-mode.
+
+## Simple Usage
+
 org-mode:
-#+begin_src org
+```org
 #+chatu: :drawio "diagram.drawio"
 #+chatu: :plantuml "diagram.puml"
 #+chatu: :curl "http://example.org/image.svg"
 #+chatu: :babashka "babashka.bb"
-#+end_src
+```
 
 markdown-mode:
-#+begin_src markdown
+```markdown
 <!-- #+chatu: :drawio "diagram.drawio" -->
 <!-- #+chatu: :plantuml "diagram.puml" -->
 <!-- #+chatu: :curl "http://example.org/image.svg" -->
 <!-- #+chatu: :babashka "babashka.bb" -->
-#+end_src
+```
 
-** Omit the extension
+## Omit the extension
 
 org-mode:
-#+begin_src org
+```org
 #+chatu: :drawio "diagram"
 #+chatu: :plantuml "diagram"
-#+end_src
+```
 
 markdown-mode:
-#+begin_src markdown
+```markdown
 <!-- #+chatu: :drawio "diagram" -->
 <!-- #+chatu: :plantuml "diagram" -->
-#+end_src
+```
 
-** Add more properties
+## Add more properties
 
 org-mode:
-#+begin_src org
+```org
 #+chatu: :drawio "diagram"
 #+name: workflow
 #+caption: chatu workflow
-#+end_src
+```
 
-** Extract specific page
+## Extract specific page
 
 org-mode:
-#+begin_src org
+```org
 #+chatu: :drawio "diagram.drawio" :page 1
 #+chatu: :plantuml "diagram.puml" :page 1
-#+end_src
+```
 
 markdown-mode:
-#+begin_src markdown
+```markdown
 <!-- #+chatu: :drawio "diagram.drawio" :page 1 -->
 <!-- #+chatu: :plantuml "diagram.puml" :page 1 -->
-#+end_src
+```
 
-** Even more specific
+## Even more specific
+
 Add input-dir, output-dir and output file name
 
 org-mode:
-#+begin_src org
+```org
 #+chatu: :drawio "diagram.drawio" :page 0 :input-dir "./draws" :output-dir "./images" :output "diagram.svg"
-#+end_src
+```
 
 markdown-mode:
-#+begin_src markdown
+```markdown
 <!-- #+chatu: :drawio "diagram.drawio" :page 0 :input-dir "./draws" :output-dir "./images" :output "diagram.svg" -->
-#+end_src
+```
 
 * Contributors
+
 <a href = "https://github.com/kimim/chatu/graphs/contributors">
   <img src = "https://contrib.rocks/image?repo=kimim/chatu"/>
 </a>
