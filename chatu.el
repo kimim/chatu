@@ -307,7 +307,7 @@ ARGS is ignored, required by `markdown-follow-thing-at-point'."
             ((and (featurep 'org)
                   (derived-mode-p 'org-mode))
              (require 'org)
-             (remove-hook 'org-ctrl-c-ctrl-c-hook 'chatu-ctrl-c-ctrl-c)
+             (remove-hook 'org-ctrl-c-ctrl-c-hook #'chatu-ctrl-c-ctrl-c)
              (setq org-open-at-point-functions
                    (delete 'chatu-ctrl-c-ctrl-o org-open-at-point-functions))))
     (cond ((and (featurep 'markdown-mode)
