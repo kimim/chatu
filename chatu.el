@@ -92,19 +92,29 @@
 
 (defun chatu-get-keyword (line)
   "Get chatu keyword from string LINE."
-  (when (string-match
-         "#\\+\\(\\w+\\): +" line)
-    (list :keyword
-          (substring-no-properties
-           (match-string 1 line)))))
+  (when (and
+         (string-match
+          "#\\+\\(\\w+\\): +" line)
+         (string= "chatu"
+                  (substring-no-properties
+                   (match-string 1 line))))
+    (list :chatu t)))
 
-(defun chatu-get-type (line)
-  "Get chatu type from string LINE."
-  (when (string-match
-         ":\\(\\w+\\) +" line)
-    (list :type
-          (substring-no-properties
-           (match-string 1 line)))))
+(defun chatu-get-settings (line)
+  "Get all chatu settings from string LINE."
+  (save-match-data
+    (let ((pos 0)
+          settings)
+      (while (string-match "\\(:\\w+\\)\\( +:\\|$\\)" line pos)
+        (setq settings
+              (append settings
+                      (list
+                       (intern
+                        (substring-no-properties
+                         (match-string 1 line)))
+                       t)))
+        (setq pos (match-end 1)))
+      settings)))
 
 (defun chatu-get-input (line)
   "Get chatu input file from string LINE."
@@ -147,6 +157,7 @@
 
 (defvar chatu-keyword-value-functions
       '(chatu-get-keyword
+        chatu-get-settings
         chatu-get-type
         chatu-get-input
         chatu-get-output
@@ -156,7 +167,7 @@
 
 (defun chatu-normalize-keyword-plist (keyword-plist)
   "Normalize KEYWORD-PLIST."
-  (when (plist-get keyword-plist :keyword)
+  (when (plist-get keyword-plist :chatu)
       (let* ((input-dir (or (plist-get keyword-plist :input-dir)
                             chatu-input-dir))
              (input (plist-get keyword-plist :input))
@@ -275,7 +286,7 @@
 (defun chatu-ctrl-c-ctrl-c ()
   "Hook function for `org-ctrl-c-ctrl-c-hook'."
   (let ((plist (chatu-keyword-plist)))
-    (if (string= "chatu" (plist-get plist :keyword))
+    (if (plist-get plist :chatu)
         (progn
           (chatu-add)
           t)
@@ -286,7 +297,7 @@
 ARGS is ignored, required by `markdown-follow-thing-at-point'."
   (ignore args) ;; args are not used.
   (let ((plist (chatu-keyword-plist)))
-    (if (string= "chatu" (plist-get plist :keyword))
+    (if (plist-get plist :chatu)
         (progn
           (chatu-open)
           t)

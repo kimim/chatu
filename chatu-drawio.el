@@ -42,16 +42,22 @@ KEYWORD-PLIST contains parameters from the chatu line."
          (output-path (plist-get keyword-plist :output-path))
          (output-path-pdf (file-name-with-extension output-path "pdf"))
          (page (plist-get keyword-plist :page)))
-    (format "%s -x %s -p %s -o %s >/dev/null 2>&1 && \
+    (if (plist-get keyword-plist :nopdf)
+        (format "draw.io %s -x %s -p %s -o %s >/dev/null 2>&1"
+                (if (plist-get keyword-plist :crop) "--crop" "")
+                (shell-quote-argument input-path)
+                (or page "0")
+                (shell-quote-argument output-path))
+      (format "draw.io %s -x %s -p %s -o %s >/dev/null 2>&1 && \
 %s %s %s >/dev/null 2>&1 && rm %s"
-            "draw.io"
-            (shell-quote-argument input-path)
-            (or page "0")
-            (shell-quote-argument output-path-pdf)
-            "pdf2svg"
-            (shell-quote-argument output-path-pdf)
-            (shell-quote-argument output-path)
-            (shell-quote-argument output-path-pdf))))
+              (if (plist-get keyword-plist :crop) "--crop" "")
+              (shell-quote-argument input-path)
+              (or page "0")
+              (shell-quote-argument output-path-pdf)
+              "pdf2svg"
+              (shell-quote-argument output-path-pdf)
+              (shell-quote-argument output-path)
+              (shell-quote-argument output-path-pdf)))))
 
 (defun chatu-drawio-open (keyword-plist)
   "Open .drawio file.

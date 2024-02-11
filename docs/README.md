@@ -38,6 +38,23 @@ Or git submodule and use-package
 ```
 
 # Usage
+Add `chatu` line with `chatu-new` command:
+
+```org
+#+chatu: :drawio "diagram.drawio" :page 0 :input-dir "./draws" :output-dir "./images" :output "diagram.svg" :crop :nopdf
+```
+```markdown
+<!-- #+chatu: :drawio "diagram.drawio" :page 0 :input-dir "./draws" :output-dir "./images" :output "diagram.svg" :crop :nopdf -->
+```
+
+Options/Settings:
+- `:drawio` specifies the backend, they can be `:planuml`, `:babashka`, `:curl` or others added in the future by you.
+- file name after backend keyword is the input file name.
+- `:page` species which page you want to import to buffer.
+- `:input-dir` and `:output-dir` are the folders for input or output file.
+- `:output` is the output file name.
+- `:crop` if you want to crop the empty white in page.
+- `:nopdf` if you do not want intermediate pdf file for drawio backend.
 
 Move cursor to `chatu` line,
 - `C-c C-c` will invoke `chatu-add` to add image in orgmode.
@@ -65,17 +82,19 @@ Both method use a `keyword-plist` parameter, which contains the
 `chatu` settings from `chatu` line.
 
 ```org
-#+chatu: :drawio "diagram.drawio" :page 0 :input-dir "./draws" :output-dir "./images" :output "diagram.svg"
+#+chatu: :drawio "diagram.drawio" :page 0 :input-dir "./draws" :output-dir "./images" :output "diagram.svg" :crop :nopdf
 ```
 
 For example, we can get following `keyword-plist` from above `chatu` line:
 
 ```emacs-lisp
-(:keyword "chatu" :type "drawio"
+(:chatu t :type "drawio"
  :input "diagram.drawio" :output "diagram.svg" :page "0"
  :input-dir "./draws" :output-dir "./images"
  :input-path "./draws/diagram.drawio"
- :output-path "./images/diagram.svg")
+ :output-path "./images/diagram.svg"
+ :crop t
+ :nopdf t)
 ```
 # Usage
 
