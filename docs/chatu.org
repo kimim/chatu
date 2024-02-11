@@ -33,3 +33,6 @@ Even more specific about input-dir, output-dir and output file name:
 [[file:./images/gnu.svg]]
 
 
+* R
+#+chatu: :R "chart-r"
+[[file:./images/chart-r.svg]]

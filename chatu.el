@@ -81,7 +81,7 @@
   :type 'string)
 
 (defcustom chatu-file-regex
-  "\"\\([\u4e00-\u9fa5:~ \\/a-z_\s0-9\\.-\\%]+\\)\""
+  "\"\\([\u4e00-\u9fa5:~ \\/a-z_\s0-9\\.\\%-]+\\)\""
   "Define regex of file. Currently support Chinese characters."
   :type 'string)
 
@@ -250,7 +250,8 @@
   (interactive)
   (save-excursion
     (let* ((keyword-plist (chatu-keyword-plist))
-           (type (plist-get keyword-plist :type))
+           (type (downcase
+                  (plist-get keyword-plist :type)))
            (script (progn
                      (require (intern (concat "chatu-" type)))
                      (funcall (intern (concat "chatu-" type "-script"))
@@ -278,7 +279,8 @@
   "Open diagram file in Emacs."
   (interactive)
   (let* ((keyword-plist (chatu-keyword-plist))
-         (type (plist-get keyword-plist :type)))
+         (type (downcase
+                (plist-get keyword-plist :type))))
     (require (intern (concat "chatu-" type)))
     (funcall (intern (concat "chatu-" type "-open"))
              keyword-plist)))
