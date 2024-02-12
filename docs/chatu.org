@@ -39,4 +39,6 @@ Even more specific about input-dir, output-dir and output file name:
 
 * Clojure
 #+chatu: :clojure "chart-clj"
+#+results:
 [[file:./images/chart-clj.svg]]
+

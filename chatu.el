@@ -253,7 +253,9 @@
    "\""
    (if (derived-mode-p 'markdown-mode)
        " -->"
-     "")))
+     "\n#+results:"))
+  (when (derived-mode-p 'org-mode)
+    (forward-line -1)))
 
 ;;;###autoload
 (defun chatu-add ()
