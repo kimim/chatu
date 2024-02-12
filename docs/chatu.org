@@ -36,3 +36,7 @@ Even more specific about input-dir, output-dir and output file name:
 * R
 #+chatu: :R "chart-r"
 [[file:./images/chart-r.svg]]
+
+* Clojure
+#+chatu: :clojure "chart-clj"
+[[file:./images/chart-clj.svg]]

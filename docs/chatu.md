@@ -26,3 +26,7 @@
 # R
 <!-- #+chatu: :R "chart-r" -->
 ![](./images/chart-r.svg)
+
+# Clojure
+<!-- #+chatu: :clojure "chart-clj" -->
+![](./images/chart-clj.svg)
