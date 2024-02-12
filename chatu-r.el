@@ -54,5 +54,3 @@ KEYWORD-PLIST contains parameters from the chatu line."
 (provide 'chatu-r)
 
 ;;; chatu-r.el ends here
-
-(file-name-extension "hello/hello")
