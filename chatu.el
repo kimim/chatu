@@ -37,27 +37,36 @@
 ;; nontrivial.  This extension provide two commands to reduce the
 ;; manual work:
 ;;
+;; - `chatu-new' add a chatu line
 ;; - `chatu-add' convert diagram to svg, and insert it to buffer
 ;; - `chatu-open' open diagram file at the point
+;;
+;; When `chatu-mode' is activated,
+;; in `org-mode',
+;; - "C-c C-o" on chatu line will invoke `chatu-open'
+;; - "C-c C-c" on chatu line will invoke `chatu-add'
+;;
+;; in `markdown-mode'
+;; - "C-c C-o" on chatu line will invoke `chatu-open'
+;; - "C-c C-c C-c" on chatu line will invoke `chatu-add'
 
-;;; Installation
+;;; Installation:
 
 ;; To enable, add the following:
 ;;
 ;;   (use-package chatu
 ;;     :custom ((chatu-input-dir "./draws")
-;;              (chatu-output-dir "./images")))
-;;
-;; You may need to install drawio, plantuml and pdf2svg in your PATH.
+;;              (chatu-output-dir "./images"))
+;;     :hook ((org-mode markdown-mode) . chatu-mode))
 
-;;; Customization
+;;; Customization:
 
 ;; `chatu-input-dir': diagram input folder, default is ./draws
 ;; `chatu-output-dir': default svg output folder, default is ./images
 ;; `chatu-dir-regex': customize folder regex
 ;; `chatu-file-regex': customize file name regex
 
-;;; Change log
+;;; Change log:
 
 ;; 2025/02/10
 ;;      * Initial version support draw.io and plantuml
