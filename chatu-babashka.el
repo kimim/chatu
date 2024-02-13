@@ -34,15 +34,18 @@
 (defun chatu-babashka-script (keyword-plist)
   "Open input.
 KEYWORD-PLIST contains parameters from the chatu line."
-  (let ((input-path (plist-get keyword-plist :input-path)))
+  (let* ((path (plist-get keyword-plist :input-path))
+         (path (chatu-common-with-extension path "bb")))
     (format "bb %s"
-            (shell-quote-argument input-path))))
+            (shell-quote-argument path))))
 
 (defun chatu-babashka-open (keyword-plist)
   "Open input file.
 KEYWORD-PLIST contains parameters from the chatu line."
   (interactive)
-  (chatu-common-open-other-window keyword-plist "bb"))
+  (let* ((path (plist-get keyword-plist :input-path))
+         (path (chatu-common-with-extension path "bb")))
+    (find-file-other-window path)))
 
 (provide 'chatu-babashka)
 

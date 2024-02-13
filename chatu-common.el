@@ -29,39 +29,28 @@
 
 ;;; Code:
 
-(defun chatu-common-open-other-window (keyword-plist file-ext)
-  "Open input file.
-KEYWORD-PLIST contains parameters from the chatu line and
-FILE-EXT is the default extension."
-  (let* ((input-path (plist-get keyword-plist :input-path))
-         (path (if (file-name-extension input-path)
-                   input-path
-                 (file-name-with-extension input-path file-ext))))
-    (find-file-other-window path)))
+(defun chatu-common-with-extension (path file-ext)
+  "Add FILE-EXT to PATH if PATH has no extension."
+  (if (file-name-extension path)
+      path
+    (file-name-with-extension path file-ext)))
 
-(defun chatu-common-open-external (keyword-plist file-ext executable)
-  "Open chatu input file.
-KEYWORD-PLIST contains parameters from the chatu line, FILE-EXT
-is the default file extension, and EXECUTABLE is the program to
-open the file."
-  (let* ((input-path (plist-get keyword-plist :input-path))
-         (path (if (file-name-extension input-path)
-                   input-path
-                 (file-name-with-extension input-path file-ext))))
-    (cond
-     ;; ensure that draw.io.exe is in execute PATH
-     ((string-equal system-type "windows-nt")
-      (if (fboundp 'w32-shell-execute)
-          (w32-shell-execute "open" path)))
-     ;; TODO: need some test for other systems
-     ((string-equal system-type "darwin")
-      (start-process "" nil "open" "-a" executable
-                     path))
-     ((string-equal system-type "gnu/linux")
-      (start-process "" nil "xdg-open"
-                     executable path))
-     ((string-equal system-type "cygwin")
-      (start-process "" nil "xdg-open"
-                     executable path)))))
+(defun chatu-common-open-external (executable path)
+  "Open chatu PATH with EXECUTABLE program."
+  (cond
+   ;; ensure that draw.io.exe is in execute PATH
+   ((string-equal system-type "windows-nt")
+    (if (fboundp 'w32-shell-execute)
+        (w32-shell-execute "open" path)))
+   ;; TODO: need some test for other systems
+   ((string-equal system-type "darwin")
+    (start-process "" nil "open" "-a" executable
+                   path))
+   ((string-equal system-type "gnu/linux")
+    (start-process "" nil "xdg-open"
+                   executable path))
+   ((string-equal system-type "cygwin")
+    (start-process "" nil "xdg-open"
+                   executable path))))
 
 (provide 'chatu-common)

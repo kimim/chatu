@@ -29,16 +29,14 @@
 
 ;;; Code:
 
-(defun chatu-drawio-add-extention (path)
-  "Change to default extension for PATH of the input file."
-  (file-name-with-extension path "drawio"))
+(require 'chatu-common)
 
 (defun chatu-drawio-script (keyword-plist)
   "Get conversion script.
 KEYWORD-PLIST contains parameters from the chatu line."
   (let* ((input-path
-          (chatu-drawio-add-extention
-           (plist-get keyword-plist :input-path)))
+          (chatu-common-with-extension
+           (plist-get keyword-plist :input-path) "drawio"))
          (output-path (plist-get keyword-plist :output-path))
          (output-path-pdf (file-name-with-extension output-path "pdf"))
          (page (plist-get keyword-plist :page)))
@@ -65,7 +63,9 @@ KEYWORD-PLIST contains parameters from the chatu line."
   "Open .drawio file.
 KEYWORD-PLIST contains parameters from the chatu line."
   (interactive)
-  (chatu-common-open-external keyword-plist "drawio" "draw.io"))
+  (let* ((path (plist-get keyword-plist :input-path))
+         (path (chatu-common-with-extension path "drawio")))
+    (chatu-common-open-external "draw.io" path)))
 
 (provide 'chatu-drawio)
 

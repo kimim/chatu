@@ -34,10 +34,8 @@
 (defun chatu-r-script (keyword-plist)
   "Open input.
 KEYWORD-PLIST contains parameters from the chatu line."
-  (let* ((input-path (plist-get keyword-plist :input-path))
-         (path (if (file-name-extension input-path)
-                   input-path
-                 (file-name-with-extension input-path "R"))))
+  (let* ((path (plist-get keyword-plist :input-path))
+         (path (chatu-common-with-extension path "R")))
     ;; TODO: how to set image output path for Rscript?
     (format "Rscript %s"
             (shell-quote-argument path))))
@@ -46,7 +44,9 @@ KEYWORD-PLIST contains parameters from the chatu line."
   "Open input file.
 KEYWORD-PLIST contains parameters from the chatu line."
   (interactive)
-  (chatu-common-open-other-window keyword-plist "R"))
+  (let* ((path (plist-get keyword-plist :input-path))
+         (path (chatu-common-with-extension path "R")))
+    (find-file-other-window path)))
 
 (provide 'chatu-r)
 

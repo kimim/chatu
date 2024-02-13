@@ -35,16 +35,14 @@
   "Open input.
 KEYWORD-PLIST contains parameters from the chatu line."
   (let* ((input-path (plist-get keyword-plist :input-path))
-         (path (if (file-name-extension input-path)
-                   input-path
-                 (file-name-with-extension input-path "ly")))
-         (output (file-name-sans-extension
-                  (plist-get keyword-plist :output-path)))
-         (with-svg (file-name-with-extension output "svg"))
-         (cropped (concat output ".cropped.svg")))
+         (input-path (chatu-common-with-extension input-path "ly"))
+         (output-sans-ext (file-name-sans-extension
+                           (plist-get keyword-plist :output-path)))
+         (with-svg (file-name-with-extension output-sans-ext "svg"))
+         (cropped (concat output-sans-ext ".cropped.svg")))
     (format "lilypond -dcrop --loglevel=ERROR --svg --output=%s %s && mv -f %s %s"
-            (shell-quote-argument output)
-            (shell-quote-argument path)
+            (shell-quote-argument output-sans-ext)
+            (shell-quote-argument input-path)
             (shell-quote-argument cropped)
             (shell-quote-argument with-svg))))
 
@@ -52,7 +50,9 @@ KEYWORD-PLIST contains parameters from the chatu line."
   "Open input file.
 KEYWORD-PLIST contains parameters from the chatu line."
   (interactive)
-  (chatu-common-open-other-window keyword-plist "ly"))
+  (let* ((path (plist-get keyword-plist :input-path))
+         (path (chatu-common-with-extension path "ly")))
+    (find-file-other-window path)))
 
 (provide 'chatu-lilypond)
 

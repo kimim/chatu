@@ -32,28 +32,28 @@
 (require 'chatu-common)
 (require 'plantuml-mode)
 
-(defun chatu-plantuml-add-extention (path)
-  "Change to default extension for PATH of the input file."
-  (file-name-with-extension path "puml"))
-
 (defun chatu-plantuml-script (keyword-plist)
   "Get conversion script.
 KEYWORD-PLIST contains parameters from the chatu line."
-  (let ((page (plist-get keyword-plist :page)))
+  (let* ((input-path (plist-get keyword-plist :input-path))
+         (input-path (chatu-common-with-extension input-path "puml"))
+         (output-path (plist-get keyword-plist :output-path))
+         (page (plist-get keyword-plist :page)))
     (concat "java -jar "
             plantuml-jar-path
             " -p -tsvg " (when page (concat "-pipeimageindex " page))
             " < "
-            (chatu-plantuml-add-extention
-             (plist-get keyword-plist :input-path))
+            input-path
             " > "
-            (plist-get keyword-plist :output-path))))
+            output-path)))
 
 (defun chatu-plantuml-open (keyword-plist)
   "Open .puml file.
 KEYWORD-PLIST contains parameters from the chatu line."
   (interactive)
-  (chatu-common-open-other-window keyword-plist "puml"))
+  (let* ((path (plist-get keyword-plist :input-path))
+         (path (chatu-common-with-extension path "puml")))
+    (find-file-other-window path)))
 
 (provide 'chatu-plantuml)
 
