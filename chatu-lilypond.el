@@ -1,4 +1,4 @@
-;;; chatu-r.el --- Chatu for R  -*- lexical-binding: t -*-
+;;; chatu-lilypond.el --- Chatu for LilyPond  -*- lexical-binding: t -*-
 
 ;; Copyright (c) 2024 Kimi Ma <kimi.im@outlook.com>
 
@@ -25,31 +25,37 @@
 
 ;;; Commentary:
 
-;; script and open function for R
+;; script and open function for LilyPond
 
 ;;; Code:
 
-(defun chatu-r-script (keyword-plist)
+(defun chatu-lilypond-script (keyword-plist)
   "Open input.
 KEYWORD-PLIST contains parameters from the chatu line."
   (let* ((input-path (plist-get keyword-plist :input-path))
          (path (if (file-name-extension input-path)
                    input-path
-                 (file-name-with-extension input-path "R"))))
-    ;; TODO: how to set image output path for Rscript?
-    (format "Rscript %s"
-            (shell-quote-argument path))))
+                 (file-name-with-extension input-path "ly")))
+         (output (file-name-sans-extension
+                  (plist-get keyword-plist :output-path)))
+         (with-svg (file-name-with-extension output "svg"))
+         (cropped (concat output ".cropped.svg")))
+    (format "lilypond -dcrop --loglevel=ERROR --svg --output=%s %s && mv -f %s %s"
+            (shell-quote-argument output)
+            (shell-quote-argument path)
+            (shell-quote-argument cropped)
+            (shell-quote-argument with-svg))))
 
-(defun chatu-r-open (keyword-plist)
+(defun chatu-lilypond-open (keyword-plist)
   "Open input file.
 KEYWORD-PLIST contains parameters from the chatu line."
   (interactive)
   (let* ((input-path (plist-get keyword-plist :input-path))
          (path (if (file-name-extension input-path)
                    input-path
-                 (file-name-with-extension input-path "R"))))
+                 (file-name-with-extension input-path "ly"))))
     (find-file-other-window path)))
 
-(provide 'chatu-r)
+(provide 'chatu-lilypond)
 
-;;; chatu-r.el ends here
+;;; chatu-lilypond.el ends here

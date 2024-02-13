@@ -30,3 +30,7 @@
 # Clojure
 <!-- #+chatu: :clojure "chart-clj" -->
 ![](./images/chart-clj.svg)
+
+# LilyPond
+<!-- #+chatu: :lilypond "joy" -->
+![](./images/joy.svg)
