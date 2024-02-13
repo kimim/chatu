@@ -43,13 +43,15 @@ KEYWORD-PLIST contains parameters from the chatu line."
          (output-path-pdf (file-name-with-extension output-path "pdf"))
          (page (plist-get keyword-plist :page)))
     (if (plist-get keyword-plist :nopdf)
-        (format "draw.io %s -x %s -p %s -o %s >/dev/null 2>&1"
+        (format "%s %s -x %s -p %s -o %s >/dev/null 2>&1"
+                (file-truename (executable-find "draw.io"))
                 (if (plist-get keyword-plist :crop) "--crop" "")
                 (shell-quote-argument input-path)
                 (or page "0")
                 (shell-quote-argument output-path))
-      (format "draw.io %s -x %s -p %s -o %s >/dev/null 2>&1 && \
+      (format "%s %s -x %s -p %s -o %s >/dev/null 2>&1 && \
 %s %s %s >/dev/null 2>&1 && rm %s"
+              (file-truename (executable-find "draw.io"))
               (if (plist-get keyword-plist :crop) "--crop" "")
               (shell-quote-argument input-path)
               (or page "0")
@@ -72,9 +74,8 @@ KEYWORD-PLIST contains parameters from the chatu line."
           (w32-shell-execute "open" path)))
      ;; TODO: need some test for other systems
      ((string-equal system-type "darwin")
-      (shell-command (concat "draw.io"
-                             (shell-quote-argument
-                              (format " %s" path)))))
+      (start-process "" nil "open" "-a" "draw.io"
+                     path))
      ((string-equal system-type "gnu/linux")
       (start-process "" nil "xdg-open"
                      "draw.io"
