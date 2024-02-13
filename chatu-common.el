@@ -25,7 +25,8 @@
 
 ;;; Commentary:
 
-;; `chatu-common-open-other-window' to open file in Emacs.
+;; `chatu-common-with-extension' to add file extension.
+;; `chatu-common-open-external' to open input file in system.
 
 ;;; Code:
 
