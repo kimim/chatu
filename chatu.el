@@ -68,7 +68,10 @@
 
 ;;; Change log:
 
-;; 2025/02/10
+;; 2025/02/13
+;;      * Support curl, babashka, clojure, R, LilyPond
+;;
+;; 2024/02/10
 ;;      * Initial version support draw.io and plantuml
 
 ;;; Code:
