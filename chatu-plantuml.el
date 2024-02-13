@@ -29,6 +29,7 @@
 
 ;;; Code:
 
+(require 'chatu-common)
 (require 'plantuml-mode)
 
 (defun chatu-plantuml-add-extention (path)
@@ -52,9 +53,7 @@ KEYWORD-PLIST contains parameters from the chatu line."
   "Open .puml file.
 KEYWORD-PLIST contains parameters from the chatu line."
   (interactive)
-  (find-file-other-window
-   (chatu-plantuml-add-extention
-    (plist-get keyword-plist :input-path))))
+  (chatu-common-open-other-window keyword-plist "puml"))
 
 (provide 'chatu-plantuml)
 

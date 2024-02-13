@@ -65,24 +65,7 @@ KEYWORD-PLIST contains parameters from the chatu line."
   "Open .drawio file.
 KEYWORD-PLIST contains parameters from the chatu line."
   (interactive)
-  (let ((path (chatu-drawio-add-extention
-               (plist-get keyword-plist :input-path))))
-    (cond
-     ;; ensure that draw.io.exe is in execute PATH
-     ((string-equal system-type "windows-nt")
-      (if (fboundp 'w32-shell-execute)
-          (w32-shell-execute "open" path)))
-     ;; TODO: need some test for other systems
-     ((string-equal system-type "darwin")
-      (start-process "" nil "open" "-a" "draw.io"
-                     path))
-     ((string-equal system-type "gnu/linux")
-      (start-process "" nil "xdg-open"
-                     "draw.io"
-                     path))
-     ((string-equal system-type "cygwin")
-      (start-process "" nil "xdg-open" "draw.io"
-                     path)))))
+  (chatu-common-open-external keyword-plist "drawio" "draw.io"))
 
 (provide 'chatu-drawio)
 

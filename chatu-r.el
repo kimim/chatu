@@ -29,6 +29,8 @@
 
 ;;; Code:
 
+(require 'chatu-common)
+
 (defun chatu-r-script (keyword-plist)
   "Open input.
 KEYWORD-PLIST contains parameters from the chatu line."
@@ -44,11 +46,7 @@ KEYWORD-PLIST contains parameters from the chatu line."
   "Open input file.
 KEYWORD-PLIST contains parameters from the chatu line."
   (interactive)
-  (let* ((input-path (plist-get keyword-plist :input-path))
-         (path (if (file-name-extension input-path)
-                   input-path
-                 (file-name-with-extension input-path "R"))))
-    (find-file-other-window path)))
+  (chatu-common-open-other-window keyword-plist "R"))
 
 (provide 'chatu-r)
 

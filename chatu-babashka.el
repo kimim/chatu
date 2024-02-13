@@ -29,6 +29,8 @@
 
 ;;; Code:
 
+(require 'chatu-common)
+
 (defun chatu-babashka-script (keyword-plist)
   "Open input.
 KEYWORD-PLIST contains parameters from the chatu line."
@@ -40,8 +42,7 @@ KEYWORD-PLIST contains parameters from the chatu line."
   "Open input file.
 KEYWORD-PLIST contains parameters from the chatu line."
   (interactive)
-  (find-file-other-window
-   (plist-get keyword-plist :input-path)))
+  (chatu-common-open-other-window keyword-plist "bb"))
 
 (provide 'chatu-babashka)
 
