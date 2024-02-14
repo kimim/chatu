@@ -48,9 +48,9 @@ KEYWORD-PLIST contains parameters from the chatu line."
 
 (defconst chatu-lilypond-empty
   "\\header {
-  title = ""
+  title = \"\"
 }
-\relative c' {
+\\relative c' {
 }"
   "Content of empty LilyPond file.")
 

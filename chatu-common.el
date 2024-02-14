@@ -41,7 +41,7 @@
 Fill PATH with EMPTY string if nonexist."
   (let ((parent (file-name-parent-directory path)))
     (when (not (file-exists-p parent))
-      (make-directory parent-dir t))
+      (make-directory parent t))
     (when (not (file-exists-p path))
       (write-region empty nil path))
     (find-file-other-window path)))
@@ -71,3 +71,5 @@ Fill PATH with EMPTY string, if nonexist."
                      executable path)))))
 
 (provide 'chatu-common)
+
+;;; chatu-common.el ends here
