@@ -46,13 +46,21 @@ KEYWORD-PLIST contains parameters from the chatu line."
             (shell-quote-argument cropped)
             (shell-quote-argument with-svg))))
 
+(defconst chatu-lilypond-empty
+  "\\header {
+  title = ""
+}
+\relative c' {
+}"
+  "Content of empty LilyPond file.")
+
 (defun chatu-lilypond-open (keyword-plist)
   "Open input file.
 KEYWORD-PLIST contains parameters from the chatu line."
   (interactive)
   (let* ((path (plist-get keyword-plist :input-path))
          (path (chatu-common-with-extension path "ly")))
-    (find-file-other-window path)))
+    (chatu-common-open-other-window path chatu-lilypond-empty)))
 
 (provide 'chatu-lilypond)
 

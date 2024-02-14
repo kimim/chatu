@@ -36,22 +36,38 @@
       path
     (file-name-with-extension path file-ext)))
 
-(defun chatu-common-open-external (executable path)
-  "Open chatu PATH with EXECUTABLE program."
-  (cond
-   ;; ensure that draw.io.exe is in execute PATH
-   ((string-equal system-type "windows-nt")
-    (if (fboundp 'w32-shell-execute)
-        (w32-shell-execute "open" path)))
-   ;; TODO: need some test for other systems
-   ((string-equal system-type "darwin")
-    (start-process "" nil "open" "-a" executable
-                   path))
-   ((string-equal system-type "gnu/linux")
-    (start-process "" nil "xdg-open"
-                   executable path))
-   ((string-equal system-type "cygwin")
-    (start-process "" nil "xdg-open"
-                   executable path))))
+(defun chatu-common-open-other-window (path empty)
+  "Open chatu PATH in other window.
+Fill PATH with EMPTY string if nonexist."
+  (let ((parent (file-name-parent-directory path)))
+    (when (not (file-exists-p parent))
+      (make-directory parent-dir t))
+    (when (not (file-exists-p path))
+      (write-region empty nil path))
+    (find-file-other-window path)))
+
+(defun chatu-common-open-external (executable path empty)
+  "Open chatu PATH with EXECUTABLE program.
+Fill PATH with EMPTY string, if nonexist."
+  (let ((parent (file-name-parent-directory path)))
+    (when (not (file-exists-p parent))
+      (make-directory parent t))
+    (when (not (file-exists-p path))
+      (write-region empty nil path))
+    (cond
+     ;; ensure that draw.io.exe is in execute PATH
+     ((string-equal system-type "windows-nt")
+      (if (fboundp 'w32-shell-execute)
+          (w32-shell-execute "open" path)))
+     ;; TODO: need some test for other systems
+     ((string-equal system-type "darwin")
+      (start-process "" nil "open" "-a" executable
+                     path))
+     ((string-equal system-type "gnu/linux")
+      (start-process "" nil "xdg-open"
+                     executable path))
+     ((string-equal system-type "cygwin")
+      (start-process "" nil "xdg-open"
+                     executable path)))))
 
 (provide 'chatu-common)

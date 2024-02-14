@@ -46,7 +46,7 @@ KEYWORD-PLIST contains parameters from the chatu line."
   (interactive)
   (let* ((path (plist-get keyword-plist :input-path))
          (path (chatu-common-with-extension path "R")))
-    (find-file-other-window path)))
+    (chatu-common-open-other-window path "")))
 
 (provide 'chatu-r)
 

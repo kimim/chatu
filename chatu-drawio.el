@@ -59,13 +59,17 @@ KEYWORD-PLIST contains parameters from the chatu line."
               (shell-quote-argument output-path)
               (shell-quote-argument output-path-pdf)))))
 
+(defconst chatu-drawio-empty
+  "<mxfile><diagram><mxGraphModel></mxGraphModel></diagram></mxfile>"
+  "Content of empty drawio file.")
+
 (defun chatu-drawio-open (keyword-plist)
   "Open .drawio file.
 KEYWORD-PLIST contains parameters from the chatu line."
   (interactive)
   (let* ((path (plist-get keyword-plist :input-path))
          (path (chatu-common-with-extension path "drawio")))
-    (chatu-common-open-external "draw.io" path)))
+    (chatu-common-open-external "draw.io" path chatu-drawio-empty)))
 
 (provide 'chatu-drawio)
 
