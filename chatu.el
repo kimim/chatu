@@ -170,7 +170,6 @@
 (defvar chatu-keyword-value-functions
       '(chatu-get-keyword
         chatu-get-settings
-        chatu-get-type
         chatu-get-input
         chatu-get-output
         chatu-get-page
