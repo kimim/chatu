@@ -112,6 +112,14 @@
                    (match-string 1 line))))
     (list :chatu t)))
 
+(defun chatu-get-type (line)
+  "Get chatu type from string LINE."
+  (when (string-match
+         ":\\(\\w+\\) +" line)
+    (list :type
+          (substring-no-properties
+           (match-string 1 line)))))
+
 (defun chatu-get-settings (line)
   "Get all chatu settings from string LINE."
   (save-match-data
@@ -170,6 +178,7 @@
 (defvar chatu-keyword-value-functions
       '(chatu-get-keyword
         chatu-get-settings
+        chatu-get-type
         chatu-get-input
         chatu-get-output
         chatu-get-page
@@ -271,6 +280,7 @@
                      (require (intern (concat "chatu-" type)))
                      (funcall (intern (concat "chatu-" type "-script"))
                               keyword-plist)))
+           (script (string-replace "\\~" "~" script))
            (result (plist-get keyword-plist :output-path)))
       (forward-line)
       (chatu-skip-lines)
