@@ -188,19 +188,36 @@
 (defun chatu-normalize-keyword-plist (keyword-plist)
   "Normalize KEYWORD-PLIST."
   (when (plist-get keyword-plist :chatu)
-      (let* ((input-dir (or (plist-get keyword-plist :input-dir)
-                            chatu-input-dir))
-             (input (plist-get keyword-plist :input))
-             (_ (plist-put keyword-plist :input-path (concat input-dir "/" input)))
+      (let* ((input (plist-get keyword-plist :input))
+             (input-dir (or (plist-get keyword-plist :input-dir)
+                            ;; if input already contains parent folder
+                            ;; ignore `chatu-input-dir'
+                            (if (file-name-directory input)
+                                nil
+                              chatu-input-dir)))
+             (_ (plist-put keyword-plist :input-path
+                           (if input-dir
+                               (concat input-dir "/" input)
+                             input)))
+             (output (plist-get keyword-plist :output))
              (output-dir (or (plist-get keyword-plist :output-dir)
-                             chatu-output-dir))
-             (output-param (plist-get keyword-plist :output))
+                            ;; if output already contains parent folder
+                            ;; ignore `chatu-output-dir'
+                             (if (and output (file-name-directory output))
+                                 nil
+                               chatu-output-dir)))
              (page (plist-get keyword-plist :page))
-             (output (or output-param
+             (output (or output
                          (if page
-                             (concat (file-name-sans-extension input) "-" page ".svg")
+                             (concat (file-name-sans-extension
+                                      ;; remove input's parent folder
+                                      (file-name-base input))
+                                     "-" page ".svg")
                            (file-name-with-extension input "svg"))))
-             (_ (plist-put keyword-plist :output-path (concat output-dir "/" output))))
+             (_ (plist-put keyword-plist :output-path
+                           (if output-dir
+                               (concat output-dir "/" output)
+                             output))))
         keyword-plist)))
 
 (defun chatu-keyword-plist ()
@@ -280,6 +297,8 @@
                      (require (intern (concat "chatu-" type)))
                      (funcall (intern (concat "chatu-" type "-script"))
                               keyword-plist)))
+           ;; ~ is after `shell-quote-argument' is \~, which is not
+           ;; working. remove it.
            (script (string-replace "\\~" "~" script))
            (result (plist-get keyword-plist :output-path)))
       (forward-line)
