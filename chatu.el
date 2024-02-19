@@ -84,6 +84,15 @@
   :link '(url-link :tag "Github" "https://github.com/kimim/chatu")
   :package-version '("Chatu" . "1.0.0"))
 
+(declare-function markdown-remove-inline-images "ext:markdown-mode.el")
+(declare-function markdown-display-inline-images "ext:markdown-mode.el")
+(declare-function markdown-follow-thing-at-point "ext:markdown-mode.el")
+(declare-function org-redisplay-inline-images "org.el")
+
+(defvar org-ctrl-c-ctrl-c-hook)
+(defvar markdown-mode-map)
+(defvar org-open-at-point-functions)
+
 (defcustom chatu-input-dir "./draws"
   "Define default input folder."
   :type 'string)
@@ -213,7 +222,9 @@
                                       ;; remove input's parent folder
                                       (file-name-base input))
                                      "-" page ".svg")
-                           (file-name-with-extension input "svg"))))
+                           (file-name-with-extension
+                            (file-name-base input)
+                            "svg"))))
              (_ (plist-put keyword-plist :output-path
                            (if output-dir
                                (concat output-dir "/" output)
@@ -230,18 +241,13 @@
     (chatu-normalize-keyword-plist plist)))
 
 (defun chatu-refresh-image ()
-  "Refresh image for different major mode."
-  (cond ((and (featurep 'markdown-mode)
-              (derived-mode-p 'markdown-mode))
-         (with-no-warnings
-           (require 'markdown-mode)
-           (markdown-remove-inline-images)
-           (markdown-display-inline-images)))
-        ((and (featurep 'org)
-              (derived-mode-p 'org-mode))
-         (with-no-warnings
-           (require 'org)
-           (org-redisplay-inline-images)))))
+  "Refresh image depending on the current major mode."
+  (cond
+   ((derived-mode-p 'markdown-mode)
+    (markdown-remove-inline-images)
+    (markdown-display-inline-images))
+   ((derived-mode-p 'org-mode)
+    (org-redisplay-inline-images))))
 
 (defun chatu-insert-image (path)
   "Insert image string PATH for different major mode."
@@ -355,34 +361,22 @@ ARGS is ignored, required by `markdown-follow-thing-at-point'."
   :global nil
   :lighter " Chatu"
   (if (not chatu-mode)
-      (cond ((and (featurep 'markdown-mode)
-                  (derived-mode-p 'markdown-mode))
-             (with-no-warnings
-               (require 'markdown-mode)
-               (keymap-unset markdown-mode-map "C-c C-c C-c" t)
-               (advice-remove 'markdown-follow-thing-at-point
-                              #'chatu-ctrl-c-ctrl-o)))
-            ((and (featurep 'org)
-                  (derived-mode-p 'org-mode))
-             (with-no-warnings
-               (require 'org)
-               (remove-hook 'org-ctrl-c-ctrl-c-hook #'chatu-ctrl-c-ctrl-c)
-               (setq org-open-at-point-functions
-                     (delete 'chatu-ctrl-c-ctrl-o org-open-at-point-functions)))))
-    (cond ((and (featurep 'markdown-mode)
-                (derived-mode-p 'markdown-mode))
-           (with-no-warnings
-             (require 'markdown-mode)
-             (keymap-set markdown-mode-map "C-c C-c C-c" 'chatu-add)
-             (advice-add 'markdown-follow-thing-at-point
-                         :before-until
-                         #'chatu-ctrl-c-ctrl-o)))
-          ((and (featurep 'org)
-                (derived-mode-p 'org-mode))
-           (with-no-warnings
-             (require 'org)
-             (add-hook 'org-ctrl-c-ctrl-c-hook #'chatu-ctrl-c-ctrl-c)
-             (add-to-list 'org-open-at-point-functions #'chatu-ctrl-c-ctrl-o))))))
+      (cond ((derived-mode-p 'markdown-mode)
+             (keymap-unset markdown-mode-map "C-c C-c C-c" t)
+             (advice-remove 'markdown-follow-thing-at-point
+                            #'chatu-ctrl-c-ctrl-o))
+            ((derived-mode-p 'org-mode)
+             (remove-hook 'org-ctrl-c-ctrl-c-hook #'chatu-ctrl-c-ctrl-c)
+             (setq org-open-at-point-functions
+                   (delete 'chatu-ctrl-c-ctrl-o org-open-at-point-functions))))
+    (cond ((derived-mode-p 'markdown-mode)
+           (keymap-set markdown-mode-map "C-c C-c C-c" 'chatu-add)
+           (advice-add 'markdown-follow-thing-at-point
+                       :before-until
+                       #'chatu-ctrl-c-ctrl-o))
+          ((derived-mode-p 'org-mode)
+           (add-hook 'org-ctrl-c-ctrl-c-hook #'chatu-ctrl-c-ctrl-c)
+           (add-to-list 'org-open-at-point-functions #'chatu-ctrl-c-ctrl-o)))))
 
 (provide 'chatu)
 
