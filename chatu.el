@@ -68,7 +68,10 @@
 
 ;;; Change log:
 
-;; 2025/02/13
+;; 2024/02/21
+;;      * add `declare-function' as suggested by riscy.
+;;
+;; 2024/02/13
 ;;      * Support curl, babashka, clojure, R, LilyPond
 ;;
 ;; 2024/02/10
@@ -312,9 +315,8 @@
       (let ((process (start-process-shell-command "chatu-buffer" nil script)))
         (set-process-sentinel
          process `(lambda (process event)
-                    (when (string-match-p "finished" event)
-                      ;; refresh image
-                      (chatu-refresh-image)))))
+                    ;; refresh image
+                    (chatu-refresh-image))))
       (if (string-prefix-p (chatu-img-pre)
                            (buffer-substring
                             (line-beginning-position)

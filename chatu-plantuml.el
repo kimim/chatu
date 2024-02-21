@@ -41,7 +41,8 @@ KEYWORD-PLIST contains parameters from the chatu line."
          (page (plist-get keyword-plist :page)))
     (concat "java -jar "
             plantuml-jar-path
-            " -p -tsvg " (when page (concat "-pipeimageindex " page))
+            " -charset utf-8 -p -tsvg "
+            (when page (concat "-pipeimageindex " page))
             " < "
             input-path
             " > "
