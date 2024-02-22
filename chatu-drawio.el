@@ -31,6 +31,17 @@
 
 (require 'chatu-common)
 
+(defcustom chatu-drawio-executable-func #'chatu-drawio--find-executable
+  "The function to find the drawio executable."
+  :group 'chatu
+  :type 'function)
+
+(defun chatu-drawio--find-executable ()
+  "Find the drawio executable on PATH, or else return nil."
+  (condition-case nil
+      (file-truename (executable-find "draw.io"))
+    (error nil)))
+
 (defun chatu-drawio-script (keyword-plist)
   "Get conversion script.
 KEYWORD-PLIST contains parameters from the chatu line."
@@ -42,14 +53,14 @@ KEYWORD-PLIST contains parameters from the chatu line."
          (page (plist-get keyword-plist :page)))
     (if (plist-get keyword-plist :nopdf)
         (format "%s %s -x %s -p %s -o %s >/dev/null 2>&1"
-                (file-truename (executable-find "draw.io"))
+                (funcall chatu-drawio-executable-func)
                 (if (plist-get keyword-plist :crop) "--crop" "")
                 (shell-quote-argument input-path)
                 (or page "0")
                 (shell-quote-argument output-path))
       (format "%s %s -x %s -p %s -o %s >/dev/null 2>&1 && \
 %s %s %s >/dev/null 2>&1 && rm %s"
-              (file-truename (executable-find "draw.io"))
+              (funcall chatu-drawio-executable-func)
               (if (plist-get keyword-plist :crop) "--crop" "")
               (shell-quote-argument input-path)
               (or page "0")
