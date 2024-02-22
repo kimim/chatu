@@ -37,10 +37,11 @@
   :type 'function)
 
 (defun chatu-drawio--find-executable ()
-  "Find the drawio executable on PATH, or else return nil."
-  (condition-case nil
+  "Find the drawio executable on PATH, or else return an error."
+  (condition-case err
       (file-truename (executable-find "draw.io"))
-    (error nil)))
+    (wrong-type-argument
+     (message "Cannot find the draw.io executable on the PATH."))))
 
 (defun chatu-drawio-script (keyword-plist)
   "Get conversion script.
