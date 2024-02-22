@@ -42,6 +42,11 @@ Even more specific about input-dir, output-dir and output file name:
 #+results:
 [[file:./images/chart-clj.svg]]
 
+* Python
+#+chatu: :python "chart-py"
+#+results:
+[[file:./images/chart-py.svg]]
+
 * LilyPond
 #+chatu: :lilypond "joy"
 #+results:

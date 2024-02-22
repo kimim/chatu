@@ -31,6 +31,10 @@
 <!-- #+chatu: :clojure "chart-clj" -->
 ![](./images/chart-clj.svg)
 
+# Python
+<!-- #+chatu: :python "chart-py" -->
+![](./images/chart-py.svg)
+
 # LilyPond
 <!-- #+chatu: :lilypond "joy" -->
 ![](./images/joy.svg)
