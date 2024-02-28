@@ -187,6 +187,13 @@
           (substring-no-properties
            (match-string 1 line)))))
 
+(defun chatu-get-script (line)
+  "Get chatu inline script from string LINE."
+  (when (string-match ":script +\"\\(.*\\)\"[ \\t\\n]*" line)
+    (list :script
+          (substring-no-properties
+           (match-string 1 line)))))
+
 (defvar chatu-keyword-value-functions
       '(chatu-get-keyword
         chatu-get-settings
@@ -195,7 +202,8 @@
         chatu-get-output
         chatu-get-page
         chatu-get-input-dir
-        chatu-get-output-dir))
+        chatu-get-output-dir
+        chatu-get-script))
 
 (defun chatu-normalize-keyword-plist (keyword-plist)
   "Normalize KEYWORD-PLIST."

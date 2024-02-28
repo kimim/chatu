@@ -51,3 +51,10 @@ Even more specific about input-dir, output-dir and output file name:
 #+chatu: :lilypond "joy"
 #+results:
 [[file:./images/joy.svg]]
+
+* inline shell script
+:PROPERTIES:
+:ORDERED:  t
+:END:
+#+chatu: :inline "inline.jpg" :output "inline.jpg" :script "convert %i -negate %o"
+[[file:./images/inline.jpg]]

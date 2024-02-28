@@ -38,3 +38,7 @@
 # LilyPond
 <!-- #+chatu: :lilypond "joy" -->
 ![](./images/joy.svg)
+
+# inline script
+<!-- #+chatu: :inline "inline.jpg" :output "inline.jpg" :script "convert %i -negate %o" -->
+![](./images/inline.jpg)
