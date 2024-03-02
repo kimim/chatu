@@ -68,6 +68,9 @@
 
 ;;; Change log:
 
+;; 2024/03/02
+;;      * add new chatu option `:output-ext' to set output extension.
+;;
 ;; 2024/02/21
 ;;      * add `declare-function' as suggested by riscy.
 ;;
@@ -164,6 +167,14 @@
             (substring-no-properties
              (match-string 1 line)))))
 
+(defun chatu-get-output-ext (line)
+  "Get chatu output file extension from string LINE."
+  (when (string-match
+         ":output-ext +\\(.+\\)[ \\t\\n]*" line)
+    (list :output-ext
+          (substring-no-properties
+           (match-string 1 line)))))
+
 (defun chatu-get-input-dir (line)
   "Get chatu output directory from string LINE."
   (when (string-match
@@ -203,7 +214,8 @@
         chatu-get-page
         chatu-get-input-dir
         chatu-get-output-dir
-        chatu-get-script))
+        chatu-get-script
+        chatu-get-output-ext))
 
 (defun chatu-normalize-keyword-plist (keyword-plist)
   "Normalize KEYWORD-PLIST."
@@ -219,6 +231,7 @@
                            (if input-dir
                                (concat input-dir "/" input)
                              input)))
+             (output-ext (plist-get keyword-plist :output-ext))
              (output (plist-get keyword-plist :output))
              (output-dir (or (plist-get keyword-plist :output-dir)
                             ;; if output already contains parent folder
@@ -235,7 +248,7 @@
                                      "-" page ".svg")
                            (file-name-with-extension
                             (file-name-base input)
-                            "svg"))))
+                            (or output-ext "svg")))))
              (_ (plist-put keyword-plist :output-path
                            (if output-dir
                                (concat output-dir "/" output)

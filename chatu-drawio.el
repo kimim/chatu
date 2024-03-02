@@ -49,27 +49,36 @@ KEYWORD-PLIST contains parameters from the chatu line."
   (let* ((input-path
           (chatu-common-with-extension
            (plist-get keyword-plist :input-path) "drawio"))
+         (output-ext (plist-get keyword-plist :output-ext))
          (output-path (plist-get keyword-plist :output-path))
          (output-path-pdf (file-name-with-extension output-path "pdf"))
          (page (plist-get keyword-plist :page)))
-    (if (plist-get keyword-plist :nopdf)
-        (format "%s %s -x %s -p %s -o %s >/dev/null 2>&1"
+    (if output-ext
+        (format "%s %s -f %s -x %s -p %s -o %s >/dev/null 2>&1"
+                (funcall chatu-drawio-executable-func)
+                (if (plist-get keyword-plist :crop) "--crop" "")
+                (shell-quote-argument output-ext)
+                (shell-quote-argument input-path)
+                (or page "0")
+                (shell-quote-argument (file-name-with-extension output-path output-ext)))
+      (if (plist-get keyword-plist :nopdf)
+          (format "%s %s -x %s -p %s -o %s >/dev/null 2>&1"
+                  (funcall chatu-drawio-executable-func)
+                  (if (plist-get keyword-plist :crop) "--crop" "")
+                  (shell-quote-argument input-path)
+                  (or page "0")
+                  (shell-quote-argument output-path))
+        (format "%s %s -x %s -p %s -o %s >/dev/null 2>&1 && \
+%s %s %s >/dev/null 2>&1 && rm %s"
                 (funcall chatu-drawio-executable-func)
                 (if (plist-get keyword-plist :crop) "--crop" "")
                 (shell-quote-argument input-path)
                 (or page "0")
-                (shell-quote-argument output-path))
-      (format "%s %s -x %s -p %s -o %s >/dev/null 2>&1 && \
-%s %s %s >/dev/null 2>&1 && rm %s"
-              (funcall chatu-drawio-executable-func)
-              (if (plist-get keyword-plist :crop) "--crop" "")
-              (shell-quote-argument input-path)
-              (or page "0")
-              (shell-quote-argument output-path-pdf)
-              "pdf2svg"
-              (shell-quote-argument output-path-pdf)
-              (shell-quote-argument output-path)
-              (shell-quote-argument output-path-pdf)))))
+                (shell-quote-argument output-path-pdf)
+                "pdf2svg"
+                (shell-quote-argument output-path-pdf)
+                (shell-quote-argument output-path)
+                (shell-quote-argument output-path-pdf))))))
 
 (defconst chatu-drawio-empty
   "<mxfile><diagram><mxGraphModel></mxGraphModel></diagram></mxfile>"
