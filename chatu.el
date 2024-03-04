@@ -1,4 +1,4 @@
-;;; chatu.el --- Convert and insert diagram to buffer -*- lexical-binding: t -*-
+;;; chatu.el --- Convert and insert any images to org-mode or markdown buffer -*- lexical-binding: t -*-
 
 ;; Copyright (c) 2024 Kimi Ma <kimi.im@outlook.com>
 
@@ -68,6 +68,9 @@
 
 ;;; Change log:
 
+;; 2024/03/03
+;;      * added to elpa package, thanks the review support from @riscy
+;;
 ;; 2024/03/02
 ;;      * add new chatu option `:output-ext' to set output extension.
 ;;
@@ -245,9 +248,10 @@
                              (concat (file-name-sans-extension
                                       ;; remove input's parent folder
                                       (file-name-base input))
-                                     "-" page ".svg")
+                                     "-" page "." (or output-ext "svg"))
                            (file-name-with-extension
                             (file-name-base input)
+                            ;; when output-ext is set, use it.
                             (or output-ext "svg")))))
              (_ (plist-put keyword-plist :output-path
                            (if output-dir

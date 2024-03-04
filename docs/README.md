@@ -82,7 +82,7 @@ Both method use a `keyword-plist` parameter, which contains the
 `chatu` settings from `chatu` line.
 
 ```org
-#+chatu: :drawio "diagram.drawio" :page 0 :input-dir "./draws" :output-dir "./images" :output "diagram.svg" :crop :nopdf
+#+chatu: :drawio "diagram.drawio" :page 0 :input-dir "./draws" :output-dir "./images" :output "diagram.svg" :crop :nopdf :output-ext svg
 ```
 
 For example, we can get following `keyword-plist` from above `chatu` line:
@@ -93,9 +93,11 @@ For example, we can get following `keyword-plist` from above `chatu` line:
  :input-dir "./draws" :output-dir "./images"
  :input-path "./draws/diagram.drawio"
  :output-path "./images/diagram.svg"
+ :output-ext "svg"
  :crop t
  :nopdf t)
 ```
+
 # Usage
 
 See example [chatu.org](./chatu.org) in orgmode and  [chatu.md](./chatu.md) in markdown-mode.
