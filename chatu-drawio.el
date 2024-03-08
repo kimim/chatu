@@ -52,25 +52,25 @@ KEYWORD-PLIST contains parameters from the chatu line."
          (output-ext (plist-get keyword-plist :output-ext))
          (output-path (plist-get keyword-plist :output-path))
          (output-path-pdf (file-name-with-extension output-path "pdf"))
-         (page (plist-get keyword-plist :page)))
+         (page (plist-get keyword-plist :page))
+         (drawio-path (shell-quote-argument (funcall chatu-drawio-executable-func))))
     (if output-ext
-        (format "%s %s -f %s -x %s -p %s -o %s >/dev/null 2>&1"
-                (funcall chatu-drawio-executable-func)
+        (format "%s %s -f %s -x %s -p %s -o %s"
+                drawio-path
                 (if (plist-get keyword-plist :crop) "--crop" "")
                 (shell-quote-argument output-ext)
                 (shell-quote-argument input-path)
                 (or page "0")
                 (shell-quote-argument (file-name-with-extension output-path output-ext)))
       (if (plist-get keyword-plist :nopdf)
-          (format "%s %s -x %s -p %s -o %s >/dev/null 2>&1"
-                  (funcall chatu-drawio-executable-func)
+          (format "%s %s -x %s -p %s -o %s"
+                  drawio-path
                   (if (plist-get keyword-plist :crop) "--crop" "")
                   (shell-quote-argument input-path)
                   (or page "0")
                   (shell-quote-argument output-path))
-        (format "%s %s -x %s -p %s -o %s >/dev/null 2>&1 && \
-%s %s %s >/dev/null 2>&1 && rm %s"
-                (funcall chatu-drawio-executable-func)
+        (format "%s %s -x %s -p %s -o %s && %s %s %s && rm %s"
+                drawio-path
                 (if (plist-get keyword-plist :crop) "--crop" "")
                 (shell-quote-argument input-path)
                 (or page "0")
