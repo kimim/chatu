@@ -38,8 +38,9 @@ KEYWORD-PLIST contains parameters from the chatu line."
   (let* ((input-path (plist-get keyword-plist :input-path))
          (input-path (chatu-common-with-extension input-path "puml"))
          (output-path (plist-get keyword-plist :output-path))
+         (input-dir (file-name-directory input-path))
          (page (plist-get keyword-plist :page)))
-    (concat "java -jar "
+    (concat "java -Dplantuml.include.path=" input-dir " -jar "
             plantuml-jar-path
             " -charset utf-8 -p -tsvg "
             (when page (concat "-pipeimageindex " page))
