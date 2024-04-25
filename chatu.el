@@ -334,7 +334,11 @@
            ;; ~ is after `shell-quote-argument' is \~, which is not
            ;; working. remove it.
            (script (string-replace "\\~" "~" script))
-           (result (plist-get keyword-plist :output-path)))
+           (result (plist-get keyword-plist :output-path))
+           (result-dir (file-name-directory result)))
+      ;; ensure output-dir exists.
+      (when (not (file-exists-p result-dir))
+        (make-directory result-dir t))
       (forward-line)
       (chatu-skip-lines)
       (let ((process (start-process-shell-command "chatu-buffer" nil script)))
