@@ -1,44 +1,44 @@
 # Insert image converted from drawio file
 <!-- #+chatu: :drawio "diagram" -->
-![](./images/diagram.svg)
+![](./draws_out/diagram.svg)
 
 <!-- :drawio "diagram" :page 1 -->
-![](./images/diagram-1.svg)
+![](./draws_out/diagram-1.svg)
 
-<!-- :drawio "diagram" :input-dir "draws" :output-dir "images" :output "diagram.svg" :page 1 -->
-![](images/diagram.svg)
+<!-- :drawio "diagram" :input-dir "draws" :output-dir "draws_out" :output "diagram.svg" :page 1 -->
+![](draws_out/diagram.svg)
 
 # Insert image generated from plantuml file
 <!-- #+chatu: :plantuml "plantuml" -->
-![](./images/plantuml.svg)
+![](./draws_out/plantuml.svg)
 
 <!-- :plantuml "plantuml" :page 1 -->
-![](./images/plantuml-1.svg)
+![](./draws_out/plantuml-1.svg)
 
 # Insert image generated from babashka script
 <!-- #+chatu: :babashka "babashka.bb" -->
-![](./images/babashka.svg)
+![](./draws_out/babashka.svg)
 
 
 # Insert image downloaded by curl
 <!-- #+chatu: :curl "https://www.emacswiki.org/pics/official%20gnu.svg" :output "gnu.svg" -->
-![](./images/gnu.svg)
+![](./draws_out/gnu.svg)
 # R
 <!-- #+chatu: :R "chart-r" -->
-![](./images/chart-r.svg)
+![](./draws_out/chart-r.svg)
 
 # Clojure
 <!-- #+chatu: :clojure "chart-clj" -->
-![](./images/chart-clj.svg)
+![](./draws_out/chart-clj.svg)
 
 # Python
 <!-- #+chatu: :python "chart-py" -->
-![](./images/chart-py.svg)
+![](./draws_out/chart-py.svg)
 
 # LilyPond
 <!-- #+chatu: :lilypond "joy" -->
-![](./images/joy.svg)
+![](./draws_out/joy.svg)
 
 # inline script
 <!-- #+chatu: :inline "inline.jpg" :output "inline.jpg" :script "convert %i -negate %o" -->
-![](./images/inline.jpg)
+![](./draws_out/inline.jpg)

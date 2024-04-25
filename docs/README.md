@@ -22,7 +22,7 @@ From melpa with use-package:
   :commands (chatu-add
              chatu-open)
   :custom ((chatu-input-dir "./draws")
-           (chatu-output-dir "./images")))
+           (chatu-output-dir "./draws_out")))
 ```
 
 Or git submodule and use-package
@@ -34,17 +34,17 @@ Or git submodule and use-package
   :commands (chatu-add
              chatu-open)
   :custom ((chatu-input-dir "./draws")
-           (chatu-output-dir "./images")))
+           (chatu-output-dir "./draws_out")))
 ```
 
 # Usage
 Add `chatu` line with `chatu-new` command:
 
 ```org
-#+chatu: :drawio "diagram.drawio" :page 0 :input-dir "./draws" :output-dir "./images" :output "diagram.svg" :crop :nopdf
+#+chatu: :drawio "diagram.drawio" :page 0 :input-dir "./draws" :output-dir "./draws_out" :output "diagram.svg" :crop :nopdf
 ```
 ```markdown
-<!-- #+chatu: :drawio "diagram.drawio" :page 0 :input-dir "./draws" :output-dir "./images" :output "diagram.svg" :crop :nopdf -->
+<!-- #+chatu: :drawio "diagram.drawio" :page 0 :input-dir "./draws" :output-dir "./draws_out" :output "diagram.svg" :crop :nopdf -->
 ```
 
 Options/Settings:
@@ -82,7 +82,7 @@ Both method use a `keyword-plist` parameter, which contains the
 `chatu` settings from `chatu` line.
 
 ```org
-#+chatu: :drawio "diagram.drawio" :page 0 :input-dir "./draws" :output-dir "./images" :output "diagram.svg" :crop :nopdf :output-ext svg
+#+chatu: :drawio "diagram.drawio" :page 0 :input-dir "./draws" :output-dir "./draws_out" :output "diagram.svg" :crop :nopdf :output-ext svg
 ```
 
 For example, we can get following `keyword-plist` from above `chatu` line:
@@ -90,9 +90,9 @@ For example, we can get following `keyword-plist` from above `chatu` line:
 ```emacs-lisp
 (:chatu t :type "drawio"
  :input "diagram.drawio" :output "diagram.svg" :page "0"
- :input-dir "./draws" :output-dir "./images"
+ :input-dir "./draws" :output-dir "./draws_out"
  :input-path "./draws/diagram.drawio"
- :output-path "./images/diagram.svg"
+ :output-path "./draws_out/diagram.svg"
  :output-ext "svg"
  :crop t
  :nopdf t)
@@ -163,12 +163,12 @@ Add input-dir, output-dir and output file name
 
 org-mode:
 ```org
-#+chatu: :drawio "diagram.drawio" :page 0 :input-dir "./draws" :output-dir "./images" :output "diagram.svg"
+#+chatu: :drawio "diagram.drawio" :page 0 :input-dir "./draws" :output-dir "./draws_out" :output "diagram.svg"
 ```
 
 markdown-mode:
 ```markdown
-<!-- #+chatu: :drawio "diagram.drawio" :page 0 :input-dir "./draws" :output-dir "./images" :output "diagram.svg" -->
+<!-- #+chatu: :drawio "diagram.drawio" :page 0 :input-dir "./draws" :output-dir "./draws_out" :output "diagram.svg" -->
 ```
 
 # Contributors

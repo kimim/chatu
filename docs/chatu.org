@@ -2,59 +2,59 @@
 #+chatu: :drawio "diagram"
 #+name: chatu-drawio-workflow
 #+caption: chatu for drawio workflow
-[[file:./images/diagram.svg]]
+[[file:./draws_out/diagram.svg]]
 
 It is also possible to extract specific page.
 
 #+chatu: :drawio "diagram.drawio" :page 1
-[[file:./images/diagram-1.svg]]
+[[file:./draws_out/diagram-1.svg]]
 
 Even more specific about input-dir, output-dir and output file name:
 
-#+chatu: :drawio "diagram.drawio" :page 0 :input-dir "./draws" :output-dir "./images" :output "diagram.svg"
-[[file:./images/diagram.svg]]
+#+chatu: :drawio "diagram.drawio" :page 0 :input-dir "./draws" :output-dir "./draws_out" :output "diagram.svg"
+[[file:./draws_out/diagram.svg]]
 
 * Insert image generated from plantuml file
 #+chatu: :plantuml "plantuml"
 #+name: chatu-plantuml-workflow
 #+caption: chatu for plantuml workflow
-[[file:./images/plantuml.svg]]
+[[file:./draws_out/plantuml.svg]]
 
 #+chatu: :plantuml "plantuml" :page 1
-[[file:./images/plantuml-1.svg]]
+[[file:./draws_out/plantuml-1.svg]]
 
 * Insert image generated from babashka script
 #+chatu: :babashka "babashka.bb"
-[[file:./images/babashka.svg]]
+[[file:./draws_out/babashka.svg]]
 
 
 * Insert image downloaded by curl
 #+chatu: :curl "https://www.emacswiki.org/pics/official%20gnu.svg" :output "gnu.svg"
-[[file:./images/gnu.svg]]
+[[file:./draws_out/gnu.svg]]
 
 
 * R
 #+chatu: :R "chart-r"
-[[file:./images/chart-r.svg]]
+[[file:./draws_out/chart-r.svg]]
 
 * Clojure
 #+chatu: :clojure "chart-clj"
 #+results:
-[[file:./images/chart-clj.svg]]
+[[file:./draws_out/chart-clj.svg]]
 
 * Python
 #+chatu: :python "chart-py"
 #+results:
-[[file:./images/chart-py.svg]]
+[[file:./draws_out/chart-py.svg]]
 
 * LilyPond
 #+chatu: :lilypond "joy"
 #+results:
-[[file:./images/joy.svg]]
+[[file:./draws_out/joy.svg]]
 
 * inline shell script
 :PROPERTIES:
 :ORDERED:  t
 :END:
 #+chatu: :inline "inline.jpg" :output "inline.jpg" :script "convert %i -negate %o"
-[[file:./images/inline.jpg]]
+[[file:./draws_out/inline.jpg]]

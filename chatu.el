@@ -106,7 +106,7 @@
   "Define default input folder."
   :type 'string)
 
-(defcustom chatu-output-dir "./images"
+(defcustom chatu-output-dir "./draws_out"
   "Define default output folder."
   :type 'string)
 
