@@ -89,8 +89,9 @@ KEYWORD-PLIST contains parameters from the chatu line."
 KEYWORD-PLIST contains parameters from the chatu line."
   (interactive)
   (let* ((path (plist-get keyword-plist :input-path))
-         (path (chatu-common-with-extension path "drawio")))
-    (chatu-common-open-external "draw.io" path chatu-drawio-empty)))
+         (path (file-truename (chatu-common-with-extension path "drawio")))
+         (executable (chatu-drawio--find-executable)))
+    (chatu-common-open-external executable path chatu-drawio-empty)))
 
 (provide 'chatu-drawio)
 
