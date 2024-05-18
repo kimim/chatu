@@ -37,6 +37,15 @@ Or git submodule and use-package
            (chatu-output-dir "./draws_out")))
 ```
 
+## draw.io
+
+You may need to add draw.io to your PATH. If you installed draw.io
+with homebrew, `draw.io` executable is located in following path:
+
+```shell
+export PATH=/opt/homebrew/Caskroom/drawio/24.2.5/draw.io.app/Contents/MacOS:$PATH
+```
+
 # Usage
 Add `chatu` line with `chatu-new` command:
 

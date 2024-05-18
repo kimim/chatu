@@ -62,7 +62,7 @@
 ;;; Customization:
 
 ;; `chatu-input-dir': diagram input folder, default is ./draws
-;; `chatu-output-dir': default svg output folder, default is ./images
+;; `chatu-output-dir': default svg output folder, default is ./draws_out
 ;; `chatu-dir-regex': customize folder regex
 ;; `chatu-file-regex': customize file name regex
 
