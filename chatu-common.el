@@ -61,11 +61,9 @@ Fill PATH with EMPTY string, if nonexist."
           (w32-shell-execute "open" path)))
      ;; TODO: need some test for other systems
      ((string-equal system-type "darwin")
-      (start-process "" nil "open" "-a" executable
-                     path))
+      (start-process "" nil "open" "-a" executable path))
      ((string-equal system-type "gnu/linux")
-      (start-process "" nil "xdg-open"
-                     executable path))
+      (start-process "" nil executable path))
      ((string-equal system-type "cygwin")
       (start-process "" nil "xdg-open"
                      executable path)))))

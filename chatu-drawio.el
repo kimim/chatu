@@ -39,7 +39,9 @@
 (defun chatu-drawio--find-executable ()
   "Find the drawio executable on PATH, or else return an error."
   (condition-case nil
-      (file-truename (executable-find "draw.io"))
+      (file-truename (or (executable-find "draw.io")
+                         ;; drawio on gentoo
+                         (executable-find "drawio")))
     (wrong-type-argument
      (message "Cannot find the draw.io executable on the PATH."))))
 
