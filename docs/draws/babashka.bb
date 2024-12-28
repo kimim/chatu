@@ -4,4 +4,4 @@
   </circle>
 </svg>")
 
-(spit "images/babashka.svg" document)
+(spit "draws_out/babashka.svg" document)
