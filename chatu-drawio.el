@@ -40,6 +40,8 @@
   "Find the drawio executable on PATH, or else return an error."
   (condition-case nil
       (file-truename (or (executable-find "draw.io")
+                         ;; for wsl emacs to find windows draw.io.exe
+                         (executable-find "draw.io.exe")
                          ;; drawio on gentoo
                          (executable-find "drawio")))
     (wrong-type-argument
