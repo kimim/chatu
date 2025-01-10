@@ -57,7 +57,15 @@ KEYWORD-PLIST contains parameters from the chatu line."
          (output-path (plist-get keyword-plist :output-path))
          (output-path-pdf (file-name-with-extension output-path "pdf"))
          (page (plist-get keyword-plist :page))
-         (drawio-path (shell-quote-argument (funcall chatu-drawio-executable-func))))
+         (drawio-path (shell-quote-argument (funcall chatu-drawio-executable-func)))
+         ;; special handling for WSL emacs invoke Windows draw.io.exe
+         (input-path
+          (if (string= "exe"
+                       (file-name-extension drawio-path))
+              (string-trim
+               (shell-command-to-string
+                (format "wslpath -aw '%s'" (file-truename input-path))))
+            input-path)))
     (if output-ext
         (format "%s %s -f %s -x %s -p %s -o %s"
                 drawio-path
@@ -92,10 +100,18 @@ KEYWORD-PLIST contains parameters from the chatu line."
   "Open .drawio file.
 KEYWORD-PLIST contains parameters from the chatu line."
   (interactive)
-  (let* ((path (plist-get keyword-plist :input-path))
-         (path (file-truename (chatu-common-with-extension path "drawio")))
-         (executable (chatu-drawio--find-executable)))
-    (chatu-common-open-external executable path chatu-drawio-empty)))
+  (let* ((input-path (plist-get keyword-plist :input-path))
+         (input-path (file-truename (chatu-common-with-extension input-path "drawio")))
+         (drawio-path (shell-quote-argument (funcall chatu-drawio-executable-func)))
+         ;; special handling for WSL emacs invoke Windows draw.io.exe
+         (input-path
+          (if (string= "exe"
+                       (file-name-extension drawio-path))
+              (string-trim
+               (shell-command-to-string
+                (format "wslpath -aw '%s'" (file-truename input-path))))
+            input-path)))
+    (chatu-common-open-external drawio-path input-path chatu-drawio-empty)))
 
 (provide 'chatu-drawio)
 
