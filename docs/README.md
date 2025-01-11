@@ -1,9 +1,11 @@
 # Introduction
 
-A small tool to various files to .svg files or download image files,
-and insert it to orgmode or markdown on-the-fly.
+A small tool converts various files to .svg files or downloads image
+files, and inserts them to orgmode or markdown buffer on-the-fly.
 
 **插 chā 图 tú**: insert a diagram.
+
+See examples in [chatu.org](./chatu.org) and [chatu.md](./chatu.md).
 
 # Install
 
@@ -11,10 +13,14 @@ Before using `chatu`, you may need to install some external programs and
 set them in your PATH:
 - draw.io and pdf2svg for drawio file conversion
 - plantuml.jar, java for plantuml
+- clojure for .clj script
 - babashka for .bb script
+- Python for .py script
 - curl for downloading file from web
+- R for statistic plotting
+- lilypond for music notes
 
-From melpa with use-package:
+Add `chatu.el` from melpa with use-package:
 
 ```emacs-lisp
 (use-package chatu
