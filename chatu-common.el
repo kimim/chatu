@@ -63,7 +63,16 @@ Fill PATH with EMPTY string, if nonexist."
      ((string-equal system-type "darwin")
       (start-process "" nil "open" "-a" executable path))
      ((string-equal system-type "gnu/linux")
-      (start-process "" nil executable path))
+      ;; special handling for WSL emacs invoke Windows draw.io.exe
+      (start-process
+       ""
+       nil executable
+       (if (string= "exe"
+                    (file-name-extension executable))
+           (string-trim
+            (shell-command-to-string
+             (format "wslpath -aw '%s'" (file-truename path))))
+         path)))
      ((string-equal system-type "cygwin")
       (start-process "" nil "xdg-open"
                      executable path)))))

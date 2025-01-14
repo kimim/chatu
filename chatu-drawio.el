@@ -102,15 +102,7 @@ KEYWORD-PLIST contains parameters from the chatu line."
   (interactive)
   (let* ((input-path (plist-get keyword-plist :input-path))
          (input-path (file-truename (chatu-common-with-extension input-path "drawio")))
-         (drawio-path (shell-quote-argument (funcall chatu-drawio-executable-func)))
-         ;; special handling for WSL emacs invoke Windows draw.io.exe
-         (input-path
-          (if (string= "exe"
-                       (file-name-extension drawio-path))
-              (string-trim
-               (shell-command-to-string
-                (format "wslpath -aw '%s'" (file-truename input-path))))
-            input-path)))
+         (drawio-path (shell-quote-argument (funcall chatu-drawio-executable-func))))
     (chatu-common-open-external drawio-path input-path chatu-drawio-empty)))
 
 (provide 'chatu-drawio)
