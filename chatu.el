@@ -295,9 +295,10 @@
   "Skip lines after chatu line."
   (while (and (derived-mode-p 'org-mode)
               (string-prefix-p
-               "#+" (buffer-substring
-                     (line-beginning-position)
-                     (line-end-position))))
+               "#+"
+               (string-trim (buffer-substring
+                             (line-beginning-position)
+                             (line-end-position)))))
     (forward-line)))
 
 ;;;###autoload
@@ -335,7 +336,12 @@
            ;; working. remove it.
            (script (string-replace "\\~" "~" script))
            (result (plist-get keyword-plist :output-path))
-           (result-dir (file-name-directory result)))
+           (result-dir (file-name-directory result))
+           (space-count (string-search
+                         "#"
+                         (buffer-substring
+                          (line-beginning-position)
+                          (line-end-position)))))
       ;; ensure output-dir exists.
       (when (not (file-exists-p result-dir))
         (make-directory result-dir t))
@@ -347,12 +353,14 @@
                     ;; refresh image
                     (chatu-refresh-image))))
       (if (string-prefix-p (chatu-img-pre)
-                           (buffer-substring
-                            (line-beginning-position)
-                            (line-end-position)))
+                           (string-trim
+                            (buffer-substring
+                             (line-beginning-position)
+                             (line-end-position))))
           ;; when it is image link
           (kill-whole-line 0)
         (progn (beginning-of-line) (open-line 1)))
+      (insert  (make-string space-count ?\s))
       (chatu-insert-image result))))
 
 ;;;###autoload
