@@ -52,6 +52,31 @@ with homebrew, `draw.io` executable is located in following path:
 export PATH=/opt/homebrew/Caskroom/drawio/24.2.5/draw.io.app/Contents/MacOS:$PATH
 ```
 
+## plantuml
+
+### requirements
+
+When you want to use chatu with PlantUML on Emacs, you have to install the following:
+
+- PlantUML
+
+  Download one of the compiled JARs from the [official site](https://plantuml.com/ja/download) or install
+  the PlantUML package provided by your distributor.
+
+  If you are using Ubuntu, type the following command in a terminal:
+
+  `sudo sh -c 'apt-get update && apt-get install plantuml'`
+
+- [plantuml-mode](https://github.com/skuro/plantuml-mode)
+
+### setting
+
+You have to define `plantuml-jar-path` in the init file, such as `$HOME/.emacs`.
+
+    (setq plantuml-jar-path "/opt/local/share/java/plantuml/plantuml.jar") ;change to the path in where you installed the jar.
+
+On Ubuntu, you can get the JAR path that has been installed via apt by typing `dpkg -L plantuml | grep plantuml.jar`.
+
 # Usage
 Add `chatu` line with `chatu-new` command:
 
