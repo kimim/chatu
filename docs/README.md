@@ -54,6 +54,8 @@ export PATH=/opt/homebrew/Caskroom/drawio/24.2.5/draw.io.app/Contents/MacOS:$PAT
 
 ## plantuml
 
+![chatu for plantuml](./images/chatu.gif)
+
 ### requirements
 
 When you want to use chatu with PlantUML on Emacs, you have to install the following:
