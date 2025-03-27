@@ -173,7 +173,7 @@
 (defun chatu-get-output-ext (line)
   "Get chatu output file extension from string LINE."
   (when (string-match
-         ":output-ext +\"\\(.+?\\)\"" line)
+         ":output-ext +\"\\(.+?\\)[ \\t\\n]" line)
     (list :output-ext
           (substring-no-properties
            (match-string 1 line)))))
@@ -234,7 +234,9 @@
                            (if input-dir
                                (concat input-dir "/" input)
                              input)))
-             (output-ext (plist-get keyword-plist :output-ext))
+             (output-ext (or (plist-get keyword-plist :output-ext)
+                             "svg"))
+             (_ (plist-put keyword-plist :output-ext output-ext))
              (output (plist-get keyword-plist :output))
              (output-dir (or (plist-get keyword-plist :output-dir)
                             ;; if output already contains parent folder
@@ -248,11 +250,10 @@
                              (concat (file-name-sans-extension
                                       ;; remove input's parent folder
                                       (file-name-base input))
-                                     "-" page "." (or output-ext "svg"))
+                                     "-" page "." output-ext)
                            (file-name-with-extension
                             (file-name-base input)
-                            ;; when output-ext is set, use it.
-                            (or output-ext "svg")))))
+                            output-ext))))
              (_ (plist-put keyword-plist :output-path
                            (if output-dir
                                (concat output-dir "/" output)
@@ -338,11 +339,15 @@
            (result (plist-get keyword-plist :output-path))
            (result-dir (file-name-directory result))
            (space-count (string-search
-                         "#"
+                         (cond ((derived-mode-p 'markdown-mode)
+                                "<"
+                                )
+                               ((derived-mode-p 'org-mode)
+                                "#"))
                          (buffer-substring
                           (line-beginning-position)
                           (line-end-position)))))
-      ;; ensure output-dir exists.
+           ;; ensure output-dir exists.
       (when (not (file-exists-p result-dir))
         (make-directory result-dir t))
       (forward-line)
