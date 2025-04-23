@@ -13,6 +13,7 @@ Before using `chatu`, you may need to install some external programs and
 set them in your PATH:
 - draw.io and pdf2svg for drawio file conversion
 - plantuml.jar, java for plantuml
+- texlive for latex
 - clojure for .clj script
 - babashka for .bb script
 - Python for .py script

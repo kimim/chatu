@@ -23,6 +23,10 @@
 # Insert image downloaded by curl
 <!-- #+chatu: :curl "https://www.emacswiki.org/pics/official%20gnu.svg" :output "gnu.svg" -->
 ![](./draws_out/gnu.svg)
+# LaTeX
+<!-- #+chatu: :latex "latex" -->
+![](./draws_out/latex.svg)
+
 # R
 <!-- #+chatu: :R "chart-r" -->
 ![](./draws_out/chart-r.svg)
