@@ -173,7 +173,7 @@
 (defun chatu-get-output-ext (line)
   "Get chatu output file extension from string LINE."
   (when (string-match
-         ":output-ext +\"\\(.+?\\)\"[ \\t\\n]" line)
+         ":output-ext +\"\\(.+?\\)\"[ \\t\\n]*" line)
     (list :output-ext
           (substring-no-properties
            (match-string 1 line)))))
