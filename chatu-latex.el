@@ -51,7 +51,7 @@ KEYWORD-PLIST contains parameters from the chatu line."
                         (shell-quote-argument path-with-svg))))))
 
 (defconst chatu-latex-empty
-  "\\\documentclass[preview]{standalone}
+  "\\documentclass[preview]{standalone}
 \\usepackage{tikz}
 \\begin{document}
 \\begin{tikzpicture}
