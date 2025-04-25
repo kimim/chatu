@@ -65,6 +65,7 @@
 ;; `chatu-output-dir': default svg output folder, default is ./draws_out
 ;; `chatu-dir-regex': customize folder regex
 ;; `chatu-file-regex': customize file name regex
+;; `chatu-output-ext': customize output file extension
 
 ;;; Change log:
 
@@ -102,22 +103,31 @@
 (defvar markdown-mode-map)
 (defvar org-open-at-point-functions)
 
+(defcustom chatu-output-ext "svg"
+  "Default output file extention."
+  :group 'chatu
+  :type 'string)
+
 (defcustom chatu-input-dir "./draws"
   "Define default input folder."
+  :group 'chatu
   :type 'string)
 
 (defcustom chatu-output-dir "./draws_out"
   "Define default output folder."
+  :group 'chatu
   :type 'string)
 
 (defcustom chatu-file-regex
   "\"\\([\u4e00-\u9fa5:~ \\/a-z_\s0-9\\.\\%-]+\\)\""
   "Define regex of file. Currently support Chinese characters."
+  :group 'chatu
   :type 'string)
 
 (defcustom chatu-dir-regex
   "\"\\([\u4e00-\u9fa5:~ \\/a-z_\s0-9\\.-]+\\)\""
   "Define regex of directry. Currently support Chinese charaters."
+  :group 'chatu
   :type 'string)
 
 (defun chatu-get-keyword (line)
@@ -235,7 +245,7 @@
                                (concat input-dir "/" input)
                              input)))
              (output-ext (or (plist-get keyword-plist :output-ext)
-                             "svg"))
+                             chatu-output-ext))
              (_ (plist-put keyword-plist :output-ext output-ext))
              (output (plist-get keyword-plist :output))
              (output-dir (or (plist-get keyword-plist :output-dir)

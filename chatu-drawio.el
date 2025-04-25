@@ -36,6 +36,12 @@
   :group 'chatu
   :type 'function)
 
+(defcustom chatu-drawio-empty
+  "<mxfile><diagram><mxGraphModel></mxGraphModel></diagram></mxfile>"
+  "Content of empty drawio file."
+  :group 'chatu
+  :type 'string)
+
 (defun chatu-drawio--find-executable ()
   "Find the drawio executable on PATH, or else return an error."
   (condition-case nil
@@ -92,9 +98,6 @@ KEYWORD-PLIST contains parameters from the chatu line."
                 (shell-quote-argument output-path)
                 (shell-quote-argument output-path-pdf))))))
 
-(defconst chatu-drawio-empty
-  "<mxfile><diagram><mxGraphModel></mxGraphModel></diagram></mxfile>"
-  "Content of empty drawio file.")
 
 (defun chatu-drawio-open (keyword-plist)
   "Open .drawio file.

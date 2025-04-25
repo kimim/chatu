@@ -31,6 +31,16 @@
 
 (require 'chatu-common)
 
+(defcustom chatu-lilypond-empty
+  "\\header {
+  title = \"\"
+}
+\\relative c' {
+}"
+  "Content of empty LilyPond file."
+  :group 'chatu
+  :type 'string)
+
 (defun chatu-lilypond-script (keyword-plist)
   "Open input.
 KEYWORD-PLIST contains parameters from the chatu line."
@@ -46,13 +56,6 @@ KEYWORD-PLIST contains parameters from the chatu line."
             (shell-quote-argument cropped)
             (shell-quote-argument with-svg))))
 
-(defconst chatu-lilypond-empty
-  "\\header {
-  title = \"\"
-}
-\\relative c' {
-}"
-  "Content of empty LilyPond file.")
 
 (defun chatu-lilypond-open (keyword-plist)
   "Open input file.

@@ -31,6 +31,18 @@
 
 (require 'chatu-common)
 
+(defcustom chatu-latex-empty
+  "\\documentclass[preview]{standalone}
+\\usepackage{tikz}
+\\begin{document}
+\\begin{tikzpicture}
+  \\draw[draw=none, fill=white] (-9,-1) rectangle (9,5);
+\\end{tikzpicture}
+\\end{document}"
+  "Content of empty standalone LaTeX tikz preview file."
+  :group 'chatu
+  :type 'string)
+
 (defun chatu-latex-script (keyword-plist)
   "Open input.
 KEYWORD-PLIST contains parameters from the chatu line."
@@ -49,16 +61,6 @@ KEYWORD-PLIST contains parameters from the chatu line."
                 (format " && pdf2svg %s %s"
                         (shell-quote-argument path-with-pdf)
                         (shell-quote-argument path-with-svg))))))
-
-(defconst chatu-latex-empty
-  "\\documentclass[preview]{standalone}
-\\usepackage{tikz}
-\\begin{document}
-\\begin{tikzpicture}
-  \\draw[draw=none, fill=white] (-9,-1) rectangle (9,5);
-\\end{tikzpicture}
-\\end{document}"
-  "Content of empty standalone LaTeX tikz preview file.")
 
 (defun chatu-latex-open (keyword-plist)
   "Open input file.
