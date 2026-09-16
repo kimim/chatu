@@ -273,8 +273,8 @@
 (defun chatu-keyword-plist ()
   "Get normalized KEYWORD-PLIST from string line."
   (let ((plist))
-    (when-let ((line (buffer-substring (line-beginning-position)
-                                       (line-end-position))))
+    (when-let* ((line (buffer-substring (line-beginning-position)
+                                        (line-end-position))))
       (dolist (fn chatu-keyword-value-functions) plist
               (setq plist (append plist (funcall fn line)))))
     (chatu-normalize-keyword-plist plist)))
